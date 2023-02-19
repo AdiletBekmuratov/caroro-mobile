@@ -11,14 +11,14 @@
     "target": "ESNext",
     "baseUrl": ".",
     "paths": {
-      "@/assets/*": ["./assets/*"],
-      "@/components/*": ["./components/*"],
-      "@/redux/*": ["./redux/*"],
-      "@/screens/*": ["./screens/*"],
-      "@/stacks/*": ["./stacks/*"],
-      "@/translations/*": ["./translations/*"],
-      "@/types/*": ["./types/*"],
-      "@/utils/*": ["./utils/*"]
+      "@/redux/*": ["./src/redux/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/config/*": ["./src/config/*"],
+      "@/screens/*": ["./src/screens/*"],
+      "@/stacks/*": ["./src/stacks/*"],
+      "@/utils/*": ["./src/utils/*"],
+      "@/types/*": ["./src/types/*"],
+      "@/assets/*": ["./assets/*"]
     }
   },
   "extends": "expo/tsconfig.base",

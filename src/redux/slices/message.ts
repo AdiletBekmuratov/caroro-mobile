@@ -1,12 +1,14 @@
+import { ISnackbar } from "@/types/index";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+const initialState: ISnackbar = {
   message: "",
+  action: null,
 };
 
 export const addMessage = createAsyncThunk(
   "message/addMessage",
-  (data: string, thunkApi) => {
+  (data: ISnackbar, thunkApi) => {
     return data;
   }
 );
@@ -17,11 +19,13 @@ export const messageSlice = createSlice({
   reducers: {
     clearMessage: (state) => {
       state.message = "";
+      state.action = null;
     },
   },
   extraReducers: (builder) => {
     builder.addCase(addMessage.fulfilled, (state, action) => {
-      state.message = action.payload;
+      state.message = action.payload.message;
+      state.action = action.payload?.action;
     });
   },
 });

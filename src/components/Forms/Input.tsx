@@ -60,7 +60,7 @@ export const Input: FC<IInputProps> = ({
       <View
         style={tw`relative border ${
           activeColor && onFocus ? activeColor : "border-gray-200"
-        } rounded justify-center px-4 py-2`}
+        } rounded-lg justify-center px-4 py-2`}
       >
         <TextInput
           keyboardType={keyboardType ?? "default"}

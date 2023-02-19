@@ -1,4 +1,7 @@
 import { Button, Input } from "@/components/Forms";
+import { useAppDispatch } from "@/redux/hooks";
+import { useGetCarManufactirersQuery } from "@/redux/services/unauth.service";
+import { addMessage } from "@/redux/slices/message";
 import React from "react";
 import { FlatList, Image, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -29,6 +32,12 @@ const data = [
 ];
 
 const Demo = () => {
+  const dispatch = useAppDispatch();
+  const { data: carData = [] } = useGetCarManufactirersQuery();
+
+  const handleSnack = () => {
+    dispatch(addMessage({ message: "Hello" }));
+  };
   return (
     <SafeAreaView style={tw`flex-1 p-5 bg-gray-100`}>
       <View style={tw`h-36 w-full justify-center bg-white rounded-xl py-4`}>
@@ -45,9 +54,46 @@ const Demo = () => {
           </Text>
         </View>
       </View>
+
+      <View style={tw`mt-4`}>
+        <View style={tw`flex-row justify-between items-center`}>
+          <Text style={tw`text-3xl font-bold`}>Бренды</Text>
+          <Text>Все</Text>
+        </View>
+        <View style={tw`flex-row`}>
+          <FlatList
+            data={carData ? carData.slice(3) : []}
+            horizontal
+            contentContainerStyle={tw`py-2`}
+            showsHorizontalScrollIndicator={false}
+            renderItem={({ item, index }) => (
+              <View
+                style={tw`w-36 bg-white px-4 py-2 items-center rounded-lg ${
+                  index !== 0 ? "ml-4" : ""
+                }`}
+              >
+                <Image
+                  source={{
+                    uri: `https://www.carlogos.org/car-logos/${item.name}-logo.png`,
+                  }}
+                  style={[tw`h-24 w-full`, { resizeMode: "contain" }]}
+                />
+
+                <View style={tw`bg-white items-center`}>
+                  <Text style={tw`text-lg capitalize`}>{item.name}</Text>
+                  <Text style={tw`font-bold text-xl text-blue-500`}>
+                    +{item.num_models}
+                  </Text>
+                </View>
+              </View>
+            )}
+          />
+        </View>
+      </View>
+
       <Input placeholder="Password" label="Password" style="mt-4" />
       <View style={tw`flex flex-row mt-4`}>
-        <Button style="w-full" onPress={() => console.log("Pressed")}>
+        <Button style="w-full" onPress={handleSnack}>
           Submit
         </Button>
       </View>

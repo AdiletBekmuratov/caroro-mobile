@@ -51,9 +51,9 @@ export const logout = createAsyncThunk("auth/logout", async () => {
 
 export const addUser = createAsyncThunk("auth/addUser", async () => {
   const jsonValue = await AsyncStorage.getItem("user");
-  const user = jsonValue != null ? JSON.parse(jsonValue) : null;
+  const user: IUser = jsonValue != null ? JSON.parse(jsonValue) : null;
   if (user) {
-    const decodedJwt = jwt_decode(user.access_token) as JwtPayload;
+    const decodedJwt = jwt_decode(user.accessToken) as JwtPayload;
     if (decodedJwt.exp * 1000 < Date.now()) {
       await AsyncStorage.removeItem("user");
       return { user: null };

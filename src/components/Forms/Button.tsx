@@ -48,7 +48,7 @@ export const Button: FC<IButtonProps> = ({
   }
   return (
     <TouchableOpacity
-      style={tw`p-4 rounded bg-black ${textPosition} ${style}`}
+      style={tw`p-4 rounded-lg bg-black ${textPosition} ${style}`}
       onPress={() => onPressVibrate(onPress)}
       activeOpacity={0.5}
       disabled={disabled}

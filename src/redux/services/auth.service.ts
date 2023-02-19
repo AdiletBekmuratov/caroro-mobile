@@ -1,10 +1,8 @@
-import axios from "axios";
-import { API_URL } from "../http";
+import axiosInstance from "@/config/axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// Register user
 const register = async (userData) => {
-  const response = await axios.post(API_URL + "/user/register/", userData);
+  const response = await axiosInstance.post("/user/register", userData);
 
   if (response.data) {
     await AsyncStorage.setItem("user", JSON.stringify(response.data));
@@ -13,9 +11,8 @@ const register = async (userData) => {
   return response.data;
 };
 
-// Login user
 const login = async (userData) => {
-  const response = await axios.post(API_URL + "/user/login/", userData);
+  const response = await axiosInstance.post("/user/login", userData);
 
   if (response.data) {
     await AsyncStorage.setItem("user", JSON.stringify(response.data));
@@ -24,7 +21,6 @@ const login = async (userData) => {
   return response.data;
 };
 
-// Logout user
 const logout = async () => {
   await AsyncStorage.removeItem("user");
 };
@@ -32,7 +28,7 @@ const logout = async () => {
 const authService = {
   register,
   logout,
-  login
+  login,
 };
 
 export default authService;
