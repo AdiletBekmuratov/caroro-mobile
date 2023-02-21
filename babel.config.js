@@ -15,6 +15,7 @@ module.exports = function (api) {
             "@/screens": "./src/screens",
             "@/stacks": "./src/stacks",
             "@/utils": "./src/utils",
+            "@/hooks": "./src/hooks",
             "@/types": "./src/types",
           },
           extensions: [".js", ".jsx", ".ts", ".tsx"],

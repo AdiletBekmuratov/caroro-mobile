@@ -18,6 +18,7 @@
       "@/stacks/*": ["./src/stacks/*"],
       "@/utils/*": ["./src/utils/*"],
       "@/types/*": ["./src/types/*"],
+      "@/hooks/*": ["./src/hooks/*"],
       "@/assets/*": ["./assets/*"]
     }
   },

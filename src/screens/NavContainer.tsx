@@ -10,6 +10,8 @@ import { addUser } from "@/redux/slices/auth";
 import { initSettings } from "@/redux/slices/settings";
 import { NavigationContainer } from "@react-navigation/native";
 import Demo from "./Demo";
+import LoginScreen from "./LoginScreen";
+import RegisterScreen from "./RegisterScreen";
 
 export default function NavContainer() {
   const dispatch = useAppDispatch();
@@ -40,7 +42,7 @@ export default function NavContainer() {
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={tw`flex-1 justify-center items-center relative`}
         >
-          <Demo />
+          <RegisterScreen />
           <SnackBar />
         </KeyboardAvoidingView>
       </BottomSheetModalProvider>

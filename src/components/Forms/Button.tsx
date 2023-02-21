@@ -11,10 +11,9 @@ import tw from "twrnc";
 
 interface IButtonProps {
   children?: ReactNode;
-  onPress?: (event: GestureResponderEvent) => void;
+  onPress: (event: GestureResponderEvent) => void;
   style?: string;
   disabled?: boolean;
-  textPosition?: "items-center" | "items-start" | "items-end";
   loading?: boolean;
   customChildren?: boolean;
 }
@@ -24,16 +23,13 @@ export const Button: FC<IButtonProps> = ({
   onPress,
   style,
   disabled,
-  textPosition = "items-center",
   loading,
   customChildren,
 }) => {
   if (disabled || loading) {
     return (
       <View
-        style={tw`flex flex-row p-4 bg-gray-200 rounded-lg items-center ${
-          "justify" + textPosition.substring(textPosition.indexOf("-"))
-        }  ${style}`}
+        style={tw`flex flex-row p-4 bg-gray-200 rounded-lg items-center ${style}`}
       >
         {loading && <ActivityIndicator color="gray" size={16} />}
         {customChildren ? (
@@ -48,7 +44,7 @@ export const Button: FC<IButtonProps> = ({
   }
   return (
     <TouchableOpacity
-      style={tw`p-4 rounded-lg bg-black ${textPosition} ${style}`}
+      style={tw`p-4 rounded-lg bg-black items-center ${style}`}
       onPress={() => onPressVibrate(onPress)}
       activeOpacity={0.5}
       disabled={disabled}
