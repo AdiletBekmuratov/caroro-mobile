@@ -1,14 +1,14 @@
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { clearMessage } from "@/redux/slices/message";
-import { Portal } from "@gorhom/portal";
-import { useEffect, useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import tw from "twrnc";
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { clearMessage } from '@/redux/slices/message';
+import { Portal } from '@gorhom/portal';
+import { useEffect, useState } from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import tw from 'twrnc';
 
 const SnackBar = () => {
   const dispatch = useAppDispatch();
-  const { message, action } = useAppSelector((state) => state.message);
+  const { message, action } = useAppSelector(state => state.message);
 
   const [visible, setVisible] = useState(false);
 

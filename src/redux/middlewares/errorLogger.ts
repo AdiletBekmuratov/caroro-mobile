@@ -1,10 +1,10 @@
-import type { Middleware, MiddlewareAPI } from "@reduxjs/toolkit";
-import { isRejectedWithValue } from "@reduxjs/toolkit";
-import { addMessage } from "../slices/message";
-import { AppDispatch } from "../store";
+import type { Middleware, MiddlewareAPI } from '@reduxjs/toolkit';
+import { isRejectedWithValue } from '@reduxjs/toolkit';
+import { addMessage } from '../slices/message';
+import { AppDispatch } from '../store';
 
 export const errorLogger: Middleware =
-  (api: MiddlewareAPI) => (next) => (action) => {
+  (api: MiddlewareAPI) => next => action => {
     if (isRejectedWithValue(action)) {
       let error = action.payload ?? action.error;
       const dispatch = api.dispatch as AppDispatch;
@@ -17,7 +17,7 @@ export const errorLogger: Middleware =
         error?.data?.message ||
         JSON.stringify(error, null, 2);
 
-      dispatch(addMessage(message));
+      dispatch(addMessage({ message }));
     }
 
     return next(action);

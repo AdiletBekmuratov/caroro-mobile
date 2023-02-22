@@ -1,26 +1,25 @@
-import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import React, { useEffect } from "react";
-import { KeyboardAvoidingView, Platform } from "react-native";
-import tw from "twrnc";
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import React, { useEffect } from 'react';
+import { KeyboardAvoidingView, Platform } from 'react-native';
+import tw from 'twrnc';
+import { NavigationContainer } from '@react-navigation/native';
 
-import SnackBar from "@/components/SnackBar";
-import Spinner from "@/components/Spinner";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { addUser } from "@/redux/slices/auth";
-import { initSettings } from "@/redux/slices/settings";
-import { NavigationContainer } from "@react-navigation/native";
-import Demo from "./Demo";
-import LoginScreen from "./LoginScreen";
-import RegisterScreen from "./RegisterScreen";
+import SnackBar from '@/components/SnackBar';
+import Spinner from '@/components/Spinner';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { addUser } from '@/redux/slices/auth';
+import { initSettings } from '@/redux/slices/settings';
+import AuthStack from '@/stacks/AuthStack';
+import Demo from './Demo';
 
 export default function NavContainer() {
   const dispatch = useAppDispatch();
   const { user, isLoading, isError, isSuccess } = useAppSelector(
-    (state) => state.auth
+    state => state.auth,
   );
 
   const { firstTime, isLoading: isLoadingSettings } = useAppSelector(
-    (state) => state.settings
+    state => state.settings,
   );
 
   useEffect(() => {
@@ -31,7 +30,7 @@ export default function NavContainer() {
     init();
   }, [dispatch]);
 
-  if (isLoading || isLoadingSettings) {
+  if (isLoadingSettings) {
     return <Spinner />;
   }
 
@@ -39,10 +38,11 @@ export default function NavContainer() {
     <NavigationContainer>
       <BottomSheetModalProvider>
         <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={tw`flex-1 justify-center items-center relative`}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={tw`flex-1 relative`}
         >
-          <RegisterScreen />
+          {isLoading && <Spinner />}
+          {user ? <Demo /> : <AuthStack />}
           <SnackBar />
         </KeyboardAvoidingView>
       </BottomSheetModalProvider>

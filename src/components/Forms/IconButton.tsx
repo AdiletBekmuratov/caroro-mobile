@@ -1,10 +1,10 @@
-import { onPressVibrate } from "@/utils/vibration";
-import { FontAwesome } from "@expo/vector-icons/";
-import React, { ComponentProps, FC } from "react";
-import { GestureResponderEvent, TouchableOpacity } from "react-native";
-import tw from "twrnc";
+import { onPressVibrate } from '@/utils/vibration';
+import { FontAwesome } from '@expo/vector-icons/';
+import React, { ComponentProps, FC } from 'react';
+import { GestureResponderEvent, TouchableOpacity } from 'react-native';
+import tw from 'twrnc';
 
-type FontAwesomeName = ComponentProps<typeof FontAwesome>["name"];
+type FontAwesomeName = ComponentProps<typeof FontAwesome>['name'];
 
 interface IIconButtonProps {
   name: FontAwesomeName;

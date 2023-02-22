@@ -1,5 +1,5 @@
-import store from "@/redux/store";
-import * as Haptics from "expo-haptics";
+import store from '@/redux/store';
+import * as Haptics from 'expo-haptics';
 
 export const vibrateError = () => {
   let isVibrate = store.getState().settings.vibrate;

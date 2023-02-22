@@ -1,13 +1,13 @@
-import { onPressVibrate } from "@/utils/vibration";
-import React, { FC, ReactNode } from "react";
+import { onPressVibrate } from '@/utils/vibration';
+import React, { FC, ReactNode } from 'react';
 import {
   ActivityIndicator,
   GestureResponderEvent,
   Text,
   TouchableOpacity,
   View,
-} from "react-native";
-import tw from "twrnc";
+} from 'react-native';
+import tw from 'twrnc';
 
 interface IButtonProps {
   children?: ReactNode;
@@ -35,7 +35,7 @@ export const Button: FC<IButtonProps> = ({
         {customChildren ? (
           children
         ) : (
-          <Text style={tw`text-gray-400 ${loading ? "ml-2" : ""}`}>
+          <Text style={tw`text-gray-400 ${loading ? 'ml-2' : ''}`}>
             {children}
           </Text>
         )}

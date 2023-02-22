@@ -1,13 +1,13 @@
-import { Portal } from "@gorhom/portal";
-import React, { FC, ReactNode } from "react";
+import { Portal } from '@gorhom/portal';
+import React, { FC, ReactNode } from 'react';
 import {
   GestureResponderEvent,
   Text,
   TouchableWithoutFeedback,
   View,
-} from "react-native";
-import tw from "twrnc";
-import { TextButton } from "./Forms";
+} from 'react-native';
+import tw from 'twrnc';
+import { TextButton } from './Forms';
 
 type IModalProps = {
   label: string;
@@ -50,7 +50,7 @@ const Modal: FC<IModalProps> = ({
             <View style={tw`border-t-[0.5px] flex-row justify-between`}>
               <TextButton
                 containerStyle={`flex-1 py-5 ${
-                  okAction ? "border-r-[0.5px]" : ""
+                  okAction ? 'border-r-[0.5px]' : ''
                 }`}
                 textStyle="text-center font-bold text-gray-500"
                 onPress={cancelAction}
@@ -63,7 +63,7 @@ const Modal: FC<IModalProps> = ({
                   textStyle="text-center font-bold"
                   onPress={okAction}
                 >
-                  {okText ?? "OK"}
+                  {okText ?? 'OK'}
                 </TextButton>
               )}
             </View>

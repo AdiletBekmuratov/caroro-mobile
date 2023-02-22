@@ -1,28 +1,28 @@
-import { ISnackbar } from "@/types/index";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { ISnackbar } from '@/types/index';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 const initialState: ISnackbar = {
-  message: "",
+  message: '',
   action: null,
 };
 
 export const addMessage = createAsyncThunk(
-  "message/addMessage",
+  'message/addMessage',
   (data: ISnackbar, thunkApi) => {
     return data;
-  }
+  },
 );
 
 export const messageSlice = createSlice({
-  name: "message",
+  name: 'message',
   initialState,
   reducers: {
-    clearMessage: (state) => {
-      state.message = "";
+    clearMessage: state => {
+      state.message = '';
       state.action = null;
     },
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder.addCase(addMessage.fulfilled, (state, action) => {
       state.message = action.payload.message;
       state.action = action.payload?.action;

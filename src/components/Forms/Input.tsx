@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState } from 'react';
 import {
   KeyboardTypeOptions,
   NativeSyntheticEvent,
@@ -6,20 +6,19 @@ import {
   TextInput,
   TextInputFocusEventData,
   View,
-} from "react-native";
-import tw from "twrnc";
-import { onPressVibrate } from "@/utils/vibration";
-import { IconButton } from "./IconButton";
+} from 'react-native';
+import tw from 'twrnc';
+import { onPressVibrate } from '@/utils/vibration';
+import { IconButton } from './IconButton';
 
 interface IInputProps {
   label?: string;
   placeholder: string;
   onBlur?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
   onChangeText?: (
-    text: string
+    text: string,
   ) => void | ((masked: string, unmasked: string, obfuscated: string) => void);
   value?: string;
-  isError?: boolean;
   errorText?: string;
   style?: string;
   secureTextEntry?: boolean;
@@ -28,12 +27,11 @@ interface IInputProps {
 }
 
 export const Input: FC<IInputProps> = ({
-  label = "",
+  label = '',
   placeholder,
   onBlur,
   onChangeText,
   value,
-  isError,
   errorText,
   style,
   secureTextEntry,
@@ -44,10 +42,10 @@ export const Input: FC<IInputProps> = ({
   const [onFocus, setOnFocus] = useState(false);
 
   const handleTogglePassVisibility = () => {
-    setPasswordVisible((prev) => !prev);
+    setPasswordVisible(prev => !prev);
   };
 
-  const handleOnBlur = (event) => {
+  const handleOnBlur = event => {
     setOnFocus(false);
     if (onBlur) {
       onBlur(event);
@@ -59,13 +57,13 @@ export const Input: FC<IInputProps> = ({
       {label.length > 0 && <Text style={tw`mb-0.5 font-bold`}>{label}</Text>}
       <View
         style={tw`relative border ${
-          activeColor && onFocus ? activeColor : "border-gray-200"
+          activeColor && onFocus ? activeColor : 'border-gray-200'
         } rounded-lg justify-center px-4 py-2`}
       >
         <TextInput
-          keyboardType={keyboardType ?? "default"}
+          keyboardType={keyboardType ?? 'default'}
           secureTextEntry={secureTextEntry ? passwordVisible : false}
-          style={tw`text-black ${secureTextEntry ? "pr-10" : ""}`}
+          style={tw`text-black ${secureTextEntry ? 'pr-10' : ''}`}
           placeholder={placeholder}
           onBlur={handleOnBlur}
           onChangeText={onChangeText}
@@ -75,14 +73,16 @@ export const Input: FC<IInputProps> = ({
 
         {secureTextEntry && (
           <IconButton
-            name={passwordVisible ? "eye" : "eye-slash"}
+            name={passwordVisible ? 'eye' : 'eye-slash'}
             style={`absolute right-0`}
             onPress={() => onPressVibrate(handleTogglePassVisibility)}
           />
         )}
       </View>
 
-      {isError && <Text>{errorText}</Text>}
+      {errorText && (
+        <Text style={tw`text-xs text-red-500 mt-0.5`}>{errorText}</Text>
+      )}
     </View>
   );
 };
