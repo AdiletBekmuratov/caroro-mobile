@@ -13,7 +13,7 @@ import { login } from '@/redux/slices/auth';
 import { AuthStackScreenProps } from '@/types/auth.stack.type';
 import { LoginFormData, LoginSchema } from '@/types/login.screen.type';
 
-const LoginScreen: FC<AuthStackScreenProps<'LoginScreen'>> = ({
+export const LoginScreen: FC<AuthStackScreenProps<'LoginScreen'>> = ({
   navigation,
 }) => {
   const dispatch = useAppDispatch();
@@ -107,5 +107,3 @@ const LoginScreen: FC<AuthStackScreenProps<'LoginScreen'>> = ({
     </SafeAreaView>
   );
 };
-
-export default LoginScreen;

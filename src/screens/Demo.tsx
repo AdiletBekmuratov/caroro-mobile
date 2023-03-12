@@ -1,5 +1,8 @@
+import { Button } from '@/components/Forms';
+import { useAppDispatch } from '@/redux/hooks';
 import { API_URL } from '@/redux/http';
 import { useGetCarBrandsQuery } from '@/redux/services/makes.service';
+import { logout } from '@/redux/slices/auth';
 import React from 'react';
 import { FlatList, Image, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -30,7 +33,11 @@ const data = [
 ];
 
 const Demo = () => {
+  const dispatch = useAppDispatch();
   const { data: carData = [] } = useGetCarBrandsQuery();
+  const handleLogout = () => {
+    dispatch(logout());
+  };
 
   return (
     <SafeAreaView style={tw`flex-1 p-5 bg-gray-100`}>
@@ -48,6 +55,7 @@ const Demo = () => {
           </Text>
         </View>
       </View>
+      <Button onPress={handleLogout}>Exit</Button>
 
       <View style={tw`mt-4`}>
         <View style={tw`flex-row justify-between items-center`}>

@@ -11,6 +11,7 @@ import { addUser } from '@/redux/slices/auth';
 import { initSettings } from '@/redux/slices/settings';
 import AuthStack from '@/stacks/AuthStack';
 import Demo from './Demo';
+import MainBottomTabs from '@/stacks/BottomStack';
 
 export default function NavContainer() {
   const dispatch = useAppDispatch();
@@ -42,7 +43,8 @@ export default function NavContainer() {
           style={tw`flex-1 relative`}
         >
           {isLoading && <Spinner />}
-          {user ? <Demo /> : <AuthStack />}
+          <MainBottomTabs />
+          {/* {user ? <MainBottomTabs /> : <AuthStack />} */}
           <SnackBar />
         </KeyboardAvoidingView>
       </BottomSheetModalProvider>

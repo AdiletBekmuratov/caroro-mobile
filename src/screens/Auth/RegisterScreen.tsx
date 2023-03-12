@@ -14,7 +14,7 @@ import {
 import { useAppDispatch } from '@/redux/hooks';
 import { register } from '@/redux/slices/auth';
 
-const RegisterScreen: FC<AuthStackScreenProps<'RegisterScreen'>> = ({
+export const RegisterScreen: FC<AuthStackScreenProps<'RegisterScreen'>> = ({
   navigation,
 }) => {
   const dispatch = useAppDispatch();
@@ -124,5 +124,3 @@ const RegisterScreen: FC<AuthStackScreenProps<'RegisterScreen'>> = ({
     </SafeAreaView>
   );
 };
-
-export default RegisterScreen;
