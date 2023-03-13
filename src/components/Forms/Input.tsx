@@ -7,7 +7,9 @@ import {
   TextInputFocusEventData,
   View,
 } from 'react-native';
+import { MaskedTextInput, MaskedTextInputProps } from 'react-native-mask-text';
 import tw from 'twrnc';
+
 import { onPressVibrate } from '@/utils/vibration';
 import { IconButton } from './IconButton';
 
@@ -15,7 +17,7 @@ interface IInputProps {
   label?: string;
   placeholder: string;
   onBlur?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
-  onChangeText?: (
+  onChangeText: (
     text: string,
   ) => void | ((masked: string, unmasked: string, obfuscated: string) => void);
   value?: string;
@@ -24,6 +26,8 @@ interface IInputProps {
   secureTextEntry?: boolean;
   keyboardType?: KeyboardTypeOptions;
   activeColor?: string;
+  mask?: MaskedTextInputProps['mask'];
+  options?: MaskedTextInputProps['options'];
 }
 
 export const Input: FC<IInputProps> = ({
@@ -37,6 +41,8 @@ export const Input: FC<IInputProps> = ({
   secureTextEntry,
   keyboardType,
   activeColor,
+  mask,
+  options
 }) => {
   const [passwordVisible, setPasswordVisible] = useState(true);
   const [onFocus, setOnFocus] = useState(false);
@@ -60,16 +66,31 @@ export const Input: FC<IInputProps> = ({
           activeColor && onFocus ? activeColor : 'border-gray-200'
         } rounded-lg justify-center px-4 py-2`}
       >
-        <TextInput
-          keyboardType={keyboardType ?? 'default'}
-          secureTextEntry={secureTextEntry ? passwordVisible : false}
-          style={tw`text-black ${secureTextEntry ? 'pr-10' : ''}`}
-          placeholder={placeholder}
-          onBlur={handleOnBlur}
-          onChangeText={onChangeText}
-          value={value}
-          onFocus={() => setOnFocus(true)}
-        />
+        {mask ? (
+          <MaskedTextInput
+            mask={mask}
+            options={options}
+            keyboardType={keyboardType ?? 'default'}
+            secureTextEntry={secureTextEntry ? passwordVisible : false}
+            style={tw`text-black ${secureTextEntry ? 'pr-10' : ''}`}
+            placeholder={placeholder}
+            onBlur={handleOnBlur}
+            onChangeText={onChangeText}
+            value={value}
+            onFocus={() => setOnFocus(true)}
+          />
+        ) : (
+          <TextInput
+            keyboardType={keyboardType ?? 'default'}
+            secureTextEntry={secureTextEntry ? passwordVisible : false}
+            style={tw`text-black ${secureTextEntry ? 'pr-10' : ''}`}
+            placeholder={placeholder}
+            onBlur={handleOnBlur}
+            onChangeText={onChangeText}
+            value={value}
+            onFocus={() => setOnFocus(true)}
+          />
+        )}
 
         {secureTextEntry && (
           <IconButton
