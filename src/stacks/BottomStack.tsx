@@ -6,6 +6,7 @@ import { HomeScreen } from '@/screens/Home';
 import { ComponentProps } from 'react';
 import { BottomTabParamList } from '../types';
 import ProfileStack from './ProfileStack';
+import MapScreen from '@/screens/MapScreen';
 
 type MaterialIconName = ComponentProps<typeof MaterialIcons>['name'];
 type MaterialCommunityName = ComponentProps<typeof MaterialCommunity>['name'];
@@ -16,11 +17,11 @@ export default function MainBottomTabs() {
   return (
     <Tab.Navigator screenOptions={{ tabBarHideOnKeyboard: true }}>
       <Tab.Screen
-        name="HomeScreen"
-        component={HomeScreen}
+        name="MapScreen"
+        component={MapScreen}
         options={{
           title: 'Главная',
-          headerShown: false,
+          headerShown: true,
           tabBarIcon: ({ focused, color, size }) => {
             let iconName: MaterialCommunityName = focused
               ? 'home'

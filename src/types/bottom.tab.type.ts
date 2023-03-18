@@ -4,6 +4,7 @@ import { ProfileStackParamList } from './profile.stack.type';
 
 export type BottomTabParamList = {
   HomeScreen: undefined;
+  MapScreen: undefined;
   ProfileStack: NavigatorScreenParams<ProfileStackParamList>;
 };
 

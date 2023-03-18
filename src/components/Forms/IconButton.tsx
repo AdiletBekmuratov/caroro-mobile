@@ -11,7 +11,8 @@ interface IIconButtonProps {
   onPress?: (event: GestureResponderEvent) => void;
   style?: string;
   disabled?: boolean;
-  size?: number
+  size?: number;
+  color?: string;
 }
 
 export const IconButton: FC<IIconButtonProps> = ({
@@ -19,7 +20,8 @@ export const IconButton: FC<IIconButtonProps> = ({
   onPress,
   style,
   disabled,
-  size = 16
+  size = 16,
+  color = '#9CA3AF',
 }) => {
   return (
     <TouchableOpacity
@@ -28,7 +30,7 @@ export const IconButton: FC<IIconButtonProps> = ({
       activeOpacity={0.5}
       disabled={disabled}
     >
-      <FontAwesome name={name} color={`#9CA3AF`} size={size} />
+      <FontAwesome name={name} color={color} size={size} />
     </TouchableOpacity>
   );
 };
