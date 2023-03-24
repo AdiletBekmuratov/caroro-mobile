@@ -1,64 +1,43 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { InteractionManager, View } from 'react-native';
+import { InteractionManager, Linking, View } from 'react-native';
 import WebView from 'react-native-webview';
 import tw from 'twrnc';
 import Spinner from './Spinner';
 
-const customHTML = (latLng: [number, number]) => {
+import markdown from 'markdown-it';
+
+let md = new markdown();
+
+const customHTML = (text: string) => {
   const htmlElement = `
 <html>
   <head>
-    <title>Caroro MapView</title>
+    <title>Caroro MarkdownView</title>
     <meta charset="UTF-8"></meta>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport"></meta>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
-        integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
-        crossorigin=""/>
-    <style>
-    body {
-      padding: 0;
-      margin: 0;
-    }
-    html, body, #map {
-      height: 100%;
-      width: 100vw;
-    }
-    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.css" integrity="sha384-bYdxxUwYipFNohQlHt0bjN/LCpueqWz13HufFEV1SUatKs1cm4L6fFgCi1jT643X" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css" integrity="sha512-bm684OXnsiNuQSyrxuuwo4PHqr3OzxPpXyhT66DA/fhl73e1JmBxRKGnO/nRwWvOZxJLRCmNH7FII+Yn1JNPmg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   </head>
 
   <body>
-    <div id="map"></div>
-
-    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
-    integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
-    crossorigin=""></script>
-
-    <script>
-      let map = L.map('map').setView([${latLng[0] - 0.0025}, ${latLng[1]}], 15);
-      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 20,
-        attribution: '&copy; Caroro'
-      }).addTo(map);
-      L.marker([${latLng[0]}, ${latLng[1]}]).addTo(map)
-      .bindPopup('Ваша машина находиться здесь', {closeButton: false})
-      .openPopup();
-    </script>
+    <main id="content" class="markdown-body" style="background: transparent;">
+    ${md.render(text)}
+    </main>
   </body>
 <html>`;
 
   return htmlElement;
 };
 
-interface MapViewProps {
+interface MarkdownViewProps {
   style?: string;
-  latLng: [number, number];
+  text: string;
 }
 
-const MapView: FC<MapViewProps> = ({ style, latLng }) => {
+const MarkdownView: FC<MarkdownViewProps> = ({ style, text }) => {
   const [loading, setLoading] = useState(true);
-  const webviewRef = useRef(null);
+  const webviewRef = useRef<WebView>(null);
   const [isWebViewLoaded, setIsWebViewLoaded] = useState(false);
   let navigation = useNavigation();
 
@@ -91,13 +70,16 @@ const MapView: FC<MapViewProps> = ({ style, latLng }) => {
           javaScriptEnabled={true}
           domStorageEnabled={true}
           androidHardwareAccelerationDisabled
-          useWebKit={true}
           style={{
             backgroundColor: 'transparent',
             opacity: 0.99,
           }}
           source={{
-            html: customHTML(latLng),
+            html: customHTML(text),
+          }}
+          onShouldStartLoadWithRequest={event => {
+            Linking.openURL(event.url);
+            return false;
           }}
         />
       )}
@@ -107,4 +89,4 @@ const MapView: FC<MapViewProps> = ({ style, latLng }) => {
   );
 };
 
-export default MapView;
+export default MarkdownView;

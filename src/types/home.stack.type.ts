@@ -1,18 +1,16 @@
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { CompositeScreenProps } from '@react-navigation/native';
-import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import {
   BottomTabParamList,
   MainBottomTabsScreenProps,
 } from './bottom.tab.type';
 
-export type ProfileStackParamList = {
-  ProfileScreen: undefined;
-  DocumentUploadScreen: undefined;
+export type HomeStackParamList = {
+  HomeScreen: undefined;
 };
 
-export type ProfileStackScreenProps<T extends keyof ProfileStackParamList> =
+export type HomeStackScreenProps<T extends keyof HomeStackParamList> =
   CompositeScreenProps<
-    BottomTabScreenProps<ProfileStackParamList, T>,
+    BottomTabScreenProps<HomeStackParamList, T>,
     MainBottomTabsScreenProps<keyof BottomTabParamList>
   >;

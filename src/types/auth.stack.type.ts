@@ -7,9 +7,3 @@ export type AuthStackParamList = {
 
 export type AuthStackScreenProps<T extends keyof AuthStackParamList> =
   NativeStackScreenProps<AuthStackParamList, T>;
-
-declare global {
-  namespace ReactNavigation {
-    interface RootParamList extends AuthStackParamList {}
-  }
-}

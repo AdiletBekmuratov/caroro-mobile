@@ -1,24 +1,27 @@
-import React, { FC, useMemo } from 'react';
-import { Text, View, Image } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons/';
+import React, { FC, useMemo, useState } from 'react';
+import { Image, Text, View, Switch, ScrollView } from 'react-native';
 import tw from 'twrnc';
 
 import { ButtonGroup, IButtonGroup, IconButton } from '@/components/Forms';
-import { useAppDispatch } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { logout } from '@/redux/slices/auth';
 import { ProfileStackScreenProps } from '@/types/index';
+import { setVibrate } from '@/redux/slices/settings';
 
 export const ProfileScreen: FC<ProfileStackScreenProps<'ProfileScreen'>> = ({
   navigation,
 }) => {
   const dispatch = useAppDispatch();
+  const { vibrate } = useAppSelector(state => state.settings);
+  const [vibrateLocal, setVibrateLocal] = useState(vibrate);
+
+  const handleVibrate = async () => {
+    setVibrateLocal(prev => !prev);
+    dispatch(setVibrate(!vibrate));
+  };
 
   const buttons = useMemo<IButtonGroup['buttons']>(
     () => [
-      {
-        children: <Text>Настройки</Text>,
-        onPress: () => {},
-      },
       {
         children: <Text>Загрузка водительских прав</Text>,
         onPress: () => navigation.navigate('DocumentUploadScreen'),
@@ -34,51 +37,80 @@ export const ProfileScreen: FC<ProfileStackScreenProps<'ProfileScreen'>> = ({
     ],
     [],
   );
+
+  const buttonsSettings = useMemo<IButtonGroup['buttons']>(
+    () => [
+      {
+        children: (
+          <View style={tw`flex-row justify-between items-center -mx-1 -my-2`}>
+            <Text>Вибрация</Text>
+            <Switch
+              value={vibrateLocal}
+              onValueChange={handleVibrate}
+              thumbColor="#262626"
+              trackColor={{ false: '#d9d9d9', true: '#7b7b7b' }}
+            />
+          </View>
+        ),
+      },
+    ],
+    [vibrateLocal],
+  );
+
   return (
-    <View style={tw`flex-1 p-5 bg-gray-100 w-full gap-5`}>
-      <View style={tw`flex-row gap-5`}>
-        <View style={tw`w-2/5 relative`}>
-          <Image
-            source={{
-              uri: 'https://source.unsplash.com/random/',
-            }}
-            style={tw`w-full h-52 rounded-lg`}
-          />
-          <IconButton
-            onPress={() => {}}
-            style="bg-white rounded-full items-center justify-center absolute -right-3 -top-3 p-2 shadow"
-            name="cloud-upload"
-          />
-        </View>
+    <View style={tw`flex-1 bg-gray-100 w-full`}>
+      <ScrollView contentContainerStyle={tw`p-5 gap-5`}>
+        <View style={tw`flex-row gap-5`}>
+          <View style={tw`w-2/5 relative`}>
+            <Image
+              source={{
+                uri: 'https://source.unsplash.com/random/',
+              }}
+              style={tw`w-full h-52 rounded-lg`}
+            />
+            <IconButton
+              onPress={() => {}}
+              style="bg-white rounded-full items-center justify-center absolute -right-3 -top-3 p-2 shadow"
+              name="cloud-upload"
+            />
+          </View>
 
-        <View style={tw`gap-2 flex-grow`}>
-          <Text style={tw`font-bold text-gray-500`}>
-            Имя: <Text style={tw`font-normal`}>Adilet</Text>
-          </Text>
-          <Text style={tw`font-bold text-gray-500`}>
-            Фамилия: <Text style={tw`font-normal`}>Bekmuratov</Text>
-          </Text>
-          <Text style={tw`font-bold text-gray-500`}>
-            Номер: <Text style={tw`font-normal`}>+7 (775) 321 4191</Text>
-          </Text>
-
-          <View
-            style={tw`bg-white rounded-lg items-center justify-center p-2 flex-grow`}
-          >
-            <Text style={tw`text-lg text-center`}>12</Text>
-            <Text style={tw`text-xs text-center text-gray-500`}>
-              Кол-во заказов
+          <View style={tw`gap-2 flex-grow`}>
+            <Text style={tw`font-bold text-gray-500`}>
+              Имя: <Text style={tw`font-normal`}>Adilet</Text>
             </Text>
-          </View>
-          <View
-            style={tw`bg-white rounded-lg items-center justify-center p-2 flex-grow`}
-          >
-            <Text style={tw`text-lg text-center text-blue-400`}>Ожидание</Text>
-            <Text style={tw`text-xs text-center text-gray-500`}>Статус</Text>
+            <Text style={tw`font-bold text-gray-500`}>
+              Фамилия: <Text style={tw`font-normal`}>Bekmuratov</Text>
+            </Text>
+            <Text style={tw`font-bold text-gray-500`}>
+              Номер: <Text style={tw`font-normal`}>+7 (775) 321 4191</Text>
+            </Text>
+
+            <View
+              style={tw`bg-white rounded-lg items-center justify-center p-2 flex-grow`}
+            >
+              <Text style={tw`text-lg text-center`}>12</Text>
+              <Text style={tw`text-xs text-center text-gray-500`}>
+                Кол-во заказов
+              </Text>
+            </View>
+            <View
+              style={tw`bg-white rounded-lg items-center justify-center p-2 flex-grow`}
+            >
+              <Text style={tw`text-lg text-center text-blue-400`}>
+                Ожидание
+              </Text>
+              <Text style={tw`text-xs text-center text-gray-500`}>Статус</Text>
+            </View>
           </View>
         </View>
-      </View>
-      <ButtonGroup containerStyle="" buttons={buttons} />
+        <ButtonGroup containerStyle="" buttons={buttons} />
+
+        <View>
+          <Text style={tw`mb-1 text-gray-500`}>Настройки</Text>
+          <ButtonGroup containerStyle="" buttons={buttonsSettings} />
+        </View>
+      </ScrollView>
     </View>
   );
 };

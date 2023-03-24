@@ -14,7 +14,7 @@ export interface IButtonGroup {
 
 export const ButtonGroup: FC<IButtonGroup> = ({ buttons, containerStyle }) => {
   return (
-    <View style={tw`${containerStyle}`}>
+    <View style={tw`${containerStyle} rounded-lg overflow-hidden`}>
       {buttons.map((button, index) =>
         button?.onPress ? (
           <TouchableOpacity

@@ -201,7 +201,12 @@ export const SwipeToConfirm = (props: Props) => {
               {state.status === Status.Confirmed ? (
                 <IconButton name="check" size={10} color={'#000'} />
               ) : state.status === Status.Verifying ? (
-                <IconButton name="spinner" size={10} color={'#000'} />
+                <IconButton
+                  iconset="MCI"
+                  name="timer-sand"
+                  size={10}
+                  color={'#000'}
+                />
               ) : (
                 <IconButton name="chevron-right" size={10} color={'#000'} />
               )}

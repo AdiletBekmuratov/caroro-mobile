@@ -15,9 +15,7 @@ import MainBottomTabs from '@/stacks/BottomStack';
 
 export default function NavContainer() {
   const dispatch = useAppDispatch();
-  const { user, isLoading, isError, isSuccess } = useAppSelector(
-    state => state.auth,
-  );
+  const { user, isLoading } = useAppSelector(state => state.auth);
 
   const { firstTime, isLoading: isLoadingSettings } = useAppSelector(
     state => state.settings,
