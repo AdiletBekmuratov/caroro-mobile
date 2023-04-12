@@ -13,7 +13,11 @@ export default function ArticlesStack() {
         options={{ title: 'Новости' }}
         component={ArticlesScreen}
       />
-      <Stack.Screen name="ArticleScreen" component={ArticleScreen} />
+      <Stack.Screen
+        name="ArticleScreen"
+        component={ArticleScreen}
+        options={({ route }) => ({ title: route.params.article.title })}
+      />
     </Stack.Navigator>
   );
 }

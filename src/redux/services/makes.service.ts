@@ -1,14 +1,38 @@
+import { Make, PaginatedResponse } from '@/types/index';
 import { baseApi } from './baseApi';
 
-// Define a service using a base URL and expected endpoints
+const mergeArrays = (...arrays) => {
+  const merged = {};
+
+  arrays.forEach(data =>
+    data.forEach(o => Object.assign((merged[o.name] ??= {}), o)),
+  );
+
+  return Object.values(merged);
+};
+
 export const makesApi = baseApi.injectEndpoints({
   endpoints: builder => ({
-    getCarBrands: builder.query<any, void>({
-      query: () => `/makes`,
+    getCarBrands: builder.query<PaginatedResponse<Make>, string>({
+      query: queryParams => `/makes?${queryParams}`,
+      serializeQueryArgs: ({ endpointName }) => {
+        return endpointName;
+      },
+      merge: (currentCache, newItems) => {
+        if (newItems.meta.currentPage > currentCache.meta.currentPage) {
+          currentCache.links = newItems.links;
+          currentCache.meta = newItems.meta;
+        }
+        currentCache.data = mergeArrays(
+          currentCache.data,
+          newItems.data,
+        ) as Make[];
+      },
+      forceRefetch({ currentArg, previousArg }) {
+        return currentArg !== previousArg;
+      },
     }),
   }),
 });
 
-// Export hooks for usage in functional components, which are
-// auto-generated based on the defined endpoints
 export const { useGetCarBrandsQuery } = makesApi;

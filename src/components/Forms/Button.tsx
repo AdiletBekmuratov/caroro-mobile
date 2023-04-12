@@ -1,3 +1,4 @@
+import tw from '@/config/twrnc';
 import { onPressVibrate } from '@/utils/vibration';
 import React, { FC, ReactNode } from 'react';
 import {
@@ -7,7 +8,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import tw from 'twrnc';
 
 interface IButtonProps {
   children?: ReactNode;

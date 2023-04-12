@@ -2,8 +2,8 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { InteractionManager, View } from 'react-native';
 import WebView from 'react-native-webview';
-import tw from 'twrnc';
 import Spinner from './Spinner';
+import tw from '@/config/twrnc';
 
 const customHTML = (latLng: [number, number]) => {
   const htmlElement = `

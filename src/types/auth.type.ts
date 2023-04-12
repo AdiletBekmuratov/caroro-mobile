@@ -1,10 +1,21 @@
-export interface IUser {
+export interface IToken {
   accessToken: string;
 }
 
 export interface IAuth {
-  user?: IUser;
+  token?: IToken;
   isError: boolean;
   isSuccess: boolean;
   isLoading: boolean;
 }
+
+export type User = {
+  id: number;
+  email: string;
+  firstname: string;
+  lastname: string;
+  phone: string;
+  status: 'disabled' | 'pending' | 'enabled';
+  createdAt: string;
+  updatedAt: string;
+};

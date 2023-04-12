@@ -1,6 +1,7 @@
 import authReducer from './slices/auth';
 import messageReducer from './slices/message';
 import settingsReducer from './slices/settings';
+import mapModalsReducer from './slices/mapModals';
 
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { baseApi } from './services/baseApi';
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   message: messageReducer,
   settings: settingsReducer,
+  mapModals: mapModalsReducer,
   [baseApi.reducerPath]: baseApi.reducer,
   [osmApi.reducerPath]: osmApi.reducer,
 });

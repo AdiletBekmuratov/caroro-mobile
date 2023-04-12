@@ -2,12 +2,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import jwt_decode, { JwtPayload } from 'jwt-decode';
 
+import { IAuth, IToken, LoginFormData, RegisterFormData } from '@/types/index';
+import { AxiosError } from 'axios';
 import authService from '../services/auth.service';
-import { IAuth, IUser, LoginFormData, RegisterFormData } from '@/types/index';
-import axios, { AxiosError } from 'axios';
 
 const initialState: IAuth = {
-  user: null,
+  token: null,
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -58,17 +58,17 @@ export const logout = createAsyncThunk('auth/logout', async () => {
 });
 
 export const addUser = createAsyncThunk('auth/addUser', async () => {
-  const jsonValue = await AsyncStorage.getItem('user');
-  const user: IUser = jsonValue != null ? JSON.parse(jsonValue) : null;
-  if (user) {
-    const decodedJwt = jwt_decode(user.accessToken) as JwtPayload;
+  const jsonValue = await AsyncStorage.getItem('token');
+  const token: IToken = jsonValue != null ? JSON.parse(jsonValue) : null;
+  if (token) {
+    const decodedJwt = jwt_decode(token.accessToken) as JwtPayload;
     if (decodedJwt.exp * 1000 < Date.now()) {
-      await AsyncStorage.removeItem('user');
-      return { user: null };
+      await AsyncStorage.removeItem('token');
+      return { token: null };
     }
   }
 
-  return { user };
+  return { token };
 });
 
 export const authSlice = createSlice({
@@ -85,8 +85,8 @@ export const authSlice = createSlice({
     builder
       .addCase(
         addUser.fulfilled,
-        (state, action: PayloadAction<{ user: IUser }>) => {
-          state.user = action.payload.user;
+        (state, action: PayloadAction<{ token: IToken }>) => {
+          state.token = action.payload.token;
           state.isLoading = false;
         },
       )
@@ -95,7 +95,7 @@ export const authSlice = createSlice({
       })
       .addCase(addUser.rejected, (state, action) => {
         state.isLoading = false;
-        state.user = null;
+        state.token = null;
       })
 
       .addCase(register.pending, state => {
@@ -104,12 +104,12 @@ export const authSlice = createSlice({
       .addCase(register.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.user = action.payload;
+        state.token = action.payload;
       })
       .addCase(register.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
-        state.user = null;
+        state.token = null;
       })
 
       .addCase(login.pending, state => {
@@ -118,16 +118,16 @@ export const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.user = action.payload;
+        state.token = action.payload;
       })
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
-        state.user = null;
+        state.token = null;
       })
 
       .addCase(logout.fulfilled, state => {
-        state.user = null;
+        state.token = null;
       });
   },
 });

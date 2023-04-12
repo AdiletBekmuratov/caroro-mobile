@@ -4,7 +4,7 @@ import { FontAwesome } from '@expo/vector-icons/';
 import * as ImagePicker from 'expo-image-picker';
 import React, { FC, useState } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
-import tw from 'twrnc';
+import tw from '@/config/twrnc';
 // import { Image } from 'expo-image';
 
 export const DocumentUploadScreen: FC<

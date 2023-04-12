@@ -1,7 +1,7 @@
-import { onPressVibrate } from "@/utils/vibration";
-import React, { FC, ReactNode } from "react";
-import { GestureResponderEvent, TouchableOpacity, View } from "react-native";
-import tw from "twrnc";
+import tw from '@/config/twrnc';
+import { onPressVibrate } from '@/utils/vibration';
+import React, { FC, ReactNode } from 'react';
+import { GestureResponderEvent, TouchableOpacity, View } from 'react-native';
 
 export interface IButtonGroup {
   containerStyle?: string;
@@ -18,38 +18,38 @@ export const ButtonGroup: FC<IButtonGroup> = ({ buttons, containerStyle }) => {
       {buttons.map((button, index) =>
         button?.onPress ? (
           <TouchableOpacity
-            key={index + "-button"}
+            key={index + '-button'}
             activeOpacity={0.5}
             disabled={button?.disabled}
             style={tw`p-4 bg-white ${
-              index !== 0 ? "border-t border-gray-100" : ""
+              index !== 0 ? 'border-t border-gray-100' : ''
             } ${
               index === 0
-                ? "rounded-t-lg"
+                ? 'rounded-t-lg'
                 : index !== 0 && index !== buttons.length - 1
-                ? ""
-                : "rounded-b-lg"
-            } ${button?.disabled ? "bg-gray-200" : ""}`}
+                ? ''
+                : 'rounded-b-lg'
+            } ${button?.disabled ? 'bg-gray-200' : ''}`}
             onPress={() => onPressVibrate(button.onPress)}
           >
             {button.children}
           </TouchableOpacity>
         ) : (
           <View
-            key={index + "-button"}
+            key={index + '-button'}
             style={tw`p-4 bg-white ${
-              index !== 0 ? "border-t border-gray-100" : ""
+              index !== 0 ? 'border-t border-gray-100' : ''
             } ${
               index === 0
-                ? "rounded-t-lg"
+                ? 'rounded-t-lg'
                 : index !== 0 && index !== buttons.length - 1
-                ? ""
-                : "rounded-b-lg"
+                ? ''
+                : 'rounded-b-lg'
             }`}
           >
             {button.children}
           </View>
-        )
+        ),
       )}
     </View>
   );

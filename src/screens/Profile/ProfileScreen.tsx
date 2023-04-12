@@ -1,12 +1,15 @@
 import React, { FC, useMemo, useState } from 'react';
 import { Image, Text, View, Switch, ScrollView } from 'react-native';
-import tw from 'twrnc';
+import tw from '@/config/twrnc';
 
 import { ButtonGroup, IButtonGroup, IconButton } from '@/components/Forms';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { logout } from '@/redux/slices/auth';
 import { ProfileStackScreenProps } from '@/types/index';
 import { setVibrate } from '@/redux/slices/settings';
+import { useFindMeQuery } from '@/redux/services/profile.service';
+import Spinner from '@/components/Spinner';
+import { statusColor, translateStatus } from '@/utils/status-translate';
 
 export const ProfileScreen: FC<ProfileStackScreenProps<'ProfileScreen'>> = ({
   navigation,
@@ -14,6 +17,8 @@ export const ProfileScreen: FC<ProfileStackScreenProps<'ProfileScreen'>> = ({
   const dispatch = useAppDispatch();
   const { vibrate } = useAppSelector(state => state.settings);
   const [vibrateLocal, setVibrateLocal] = useState(vibrate);
+
+  const { data, isLoading } = useFindMeQuery();
 
   const handleVibrate = async () => {
     setVibrateLocal(prev => !prev);
@@ -31,7 +36,7 @@ export const ProfileScreen: FC<ProfileStackScreenProps<'ProfileScreen'>> = ({
         onPress: () => {},
       },
       {
-        children: <Text style={tw`text-red-500`}>Выйти</Text>,
+        children: <Text style={tw`text-red-400`}>Выйти</Text>,
         onPress: () => dispatch(logout()),
       },
     ],
@@ -57,6 +62,10 @@ export const ProfileScreen: FC<ProfileStackScreenProps<'ProfileScreen'>> = ({
     [vibrateLocal],
   );
 
+  if (isLoading) {
+    return <Spinner />;
+  }
+
   return (
     <View style={tw`flex-1 bg-gray-100 w-full`}>
       <ScrollView contentContainerStyle={tw`p-5 gap-5`}>
@@ -64,9 +73,9 @@ export const ProfileScreen: FC<ProfileStackScreenProps<'ProfileScreen'>> = ({
           <View style={tw`w-2/5 relative`}>
             <Image
               source={{
-                uri: 'https://source.unsplash.com/random/',
+                uri: 'https://www.w3schools.com/howto/img_avatar.png',
               }}
-              style={tw`w-full h-52 rounded-lg`}
+              style={tw`w-full h-52 rounded-lg bg-white`}
             />
             <IconButton
               onPress={() => {}}
@@ -74,16 +83,15 @@ export const ProfileScreen: FC<ProfileStackScreenProps<'ProfileScreen'>> = ({
               name="cloud-upload"
             />
           </View>
-
           <View style={tw`gap-2 flex-grow`}>
             <Text style={tw`font-bold text-gray-500`}>
-              Имя: <Text style={tw`font-normal`}>Adilet</Text>
+              Имя: <Text style={tw`font-normal`}>{data.firstname}</Text>
             </Text>
             <Text style={tw`font-bold text-gray-500`}>
-              Фамилия: <Text style={tw`font-normal`}>Bekmuratov</Text>
+              Фамилия: <Text style={tw`font-normal`}>{data.lastname}</Text>
             </Text>
             <Text style={tw`font-bold text-gray-500`}>
-              Номер: <Text style={tw`font-normal`}>+7 (775) 321 4191</Text>
+              Номер: <Text style={tw`font-normal`}>{data.phone}</Text>
             </Text>
 
             <View
@@ -97,13 +105,14 @@ export const ProfileScreen: FC<ProfileStackScreenProps<'ProfileScreen'>> = ({
             <View
               style={tw`bg-white rounded-lg items-center justify-center p-2 flex-grow`}
             >
-              <Text style={tw`text-lg text-center text-blue-400`}>
-                Ожидание
+              <Text style={tw`text-lg text-center ${statusColor(data.status)}`}>
+                {translateStatus(data.status)}
               </Text>
               <Text style={tw`text-xs text-center text-gray-500`}>Статус</Text>
             </View>
           </View>
         </View>
+
         <ButtonGroup containerStyle="" buttons={buttons} />
 
         <View>

@@ -6,8 +6,8 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import tw from 'twrnc';
 import { TextButton } from './Forms';
+import tw from '@/config/twrnc';
 
 type IModalProps = {
   label: string;

@@ -1,4 +1,4 @@
-import { HomeScreen } from '@/screens/Home';
+import { HomeScreen, MakesScreen } from '@/screens/Home';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { HomeStackParamList } from '../types';
@@ -12,6 +12,11 @@ export default function HomeStack() {
         name="HomeScreen"
         options={{ title: 'Главная' }}
         component={HomeScreen}
+      />
+      <Stack.Screen
+        name="MakesScreen"
+        options={{ title: 'Все Бренды' }}
+        component={MakesScreen}
       />
     </Stack.Navigator>
   );

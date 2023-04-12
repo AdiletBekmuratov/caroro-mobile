@@ -1,8 +1,8 @@
+import tw from '@/config/twrnc';
 import { onPressVibrate } from '@/utils/vibration';
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { ComponentProps, FC } from 'react';
 import { GestureResponderEvent, TouchableOpacity } from 'react-native';
-import tw from 'twrnc';
 
 type FontAwesomeName = ComponentProps<typeof FontAwesome>['name'];
 type MaterialCommunityIconsName = ComponentProps<

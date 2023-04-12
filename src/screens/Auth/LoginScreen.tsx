@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import tw from 'twrnc';
+import tw from '@/config/twrnc';
 
 import { Button, Input, TextButton } from '@/components/Forms';
 import Modal from '@/components/Modal';

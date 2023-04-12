@@ -3,14 +3,13 @@ import {
   Animated,
   Easing,
   PanResponder,
-  StyleSheet,
+  Text,
   View,
   ViewStyle,
-  Text,
 } from 'react-native';
-import tw from 'twrnc';
 
 import { IconButton } from './IconButton';
+import tw from '@/config/twrnc';
 
 export enum Status {
   Initial = 1,

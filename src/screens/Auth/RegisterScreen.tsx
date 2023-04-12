@@ -1,9 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { FC } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import tw from 'twrnc';
+import tw from '@/config/twrnc';
 
 import { Button, Input, TextButton } from '@/components/Forms';
 import {
@@ -27,7 +27,9 @@ export const RegisterScreen: FC<AuthStackScreenProps<'RegisterScreen'>> = ({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
       email: '',
-      username: '',
+      firstname: '',
+      lastname: '',
+      phone: '',
       password: '',
       confirm: '',
     },
@@ -42,72 +44,107 @@ export const RegisterScreen: FC<AuthStackScreenProps<'RegisterScreen'>> = ({
       <Text style={tw`text-lg font-medium text-gray-500 mt-2`}>
         Создайте Ваш новый аккаунт
       </Text>
-      <Controller
-        control={control}
-        name="email"
-        render={({ field: { onChange, onBlur, value } }) => (
-          <Input
-            placeholder="Email"
-            label="Email"
-            onBlur={onBlur}
-            onChangeText={val => onChange(val.trim())}
-            value={value}
-            errorText={errors.email?.message}
-            activeColor="border-gray-300"
-            style="mt-8"
-          />
-        )}
-      />
-      <Controller
-        control={control}
-        name="username"
-        render={({ field: { onChange, onBlur, value } }) => (
-          <Input
-            placeholder="Имя пользователя"
-            label="Имя пользователя"
-            onBlur={onBlur}
-            onChangeText={val => onChange(val.trim())}
-            value={value}
-            errorText={errors.username?.message}
-            activeColor="border-gray-300"
-            style="mt-4"
-          />
-        )}
-      />
-      <Controller
-        control={control}
-        name="password"
-        render={({ field: { onChange, onBlur, value } }) => (
-          <Input
-            placeholder="Пароль"
-            label="Пароль"
-            style="mt-4"
-            secureTextEntry
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            errorText={errors.password?.message}
-            activeColor="border-gray-300"
-          />
-        )}
-      />
-      <Controller
-        control={control}
-        name="confirm"
-        render={({ field: { onChange, onBlur, value } }) => (
-          <Input
-            placeholder="Подтверждение пароля"
-            label="Подтверждение пароля"
-            style="mt-4"
-            secureTextEntry
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            errorText={errors.confirm?.message}
-            activeColor="border-gray-300"
-          />
-        )}
-      />
+      <ScrollView>
+        <Controller
+          control={control}
+          name="email"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <Input
+              placeholder="Email"
+              label="Email"
+              onBlur={onBlur}
+              onChangeText={val => onChange(val.trim())}
+              value={value}
+              errorText={errors.email?.message}
+              activeColor="border-gray-300"
+              style="mt-8"
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name="firstname"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <Input
+              placeholder="Имя"
+              label="Имя"
+              onBlur={onBlur}
+              onChangeText={val => onChange(val.trim())}
+              value={value}
+              errorText={errors.firstname?.message}
+              activeColor="border-gray-300"
+              style="mt-4"
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name="lastname"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <Input
+              placeholder="Фамилия"
+              label="Фамилия"
+              onBlur={onBlur}
+              onChangeText={val => onChange(val.trim())}
+              value={value}
+              errorText={errors.lastname?.message}
+              activeColor="border-gray-300"
+              style="mt-4"
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name="phone"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <Input
+              placeholder="+7 (___) ___ ____"
+              label="Телефон"
+              onBlur={onBlur}
+              mask="+7 (999) 999 9999"
+              onChangeText={val => onChange(val.trim())}
+              value={value}
+              errorText={errors.phone?.message}
+              activeColor="border-gray-300"
+              style="mt-4"
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name="password"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <Input
+              placeholder="Пароль"
+              label="Пароль"
+              style="mt-4"
+              secureTextEntry
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              errorText={errors.password?.message}
+              activeColor="border-gray-300"
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name="confirm"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <Input
+              placeholder="Подтверждение пароля"
+              label="Подтверждение пароля"
+              style="mt-4"
+              secureTextEntry
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              errorText={errors.confirm?.message}
+              activeColor="border-gray-300"
+            />
+          )}
+        />
+      </ScrollView>
 
       <View style={tw`flex-grow bg-gray-100 mt-4`}>
         <Button style="w-full mt-auto" onPress={handleSubmit(onSubmit)}>

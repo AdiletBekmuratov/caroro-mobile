@@ -2,10 +2,10 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { InteractionManager, Linking, View } from 'react-native';
 import WebView from 'react-native-webview';
-import tw from 'twrnc';
-import Spinner from './Spinner';
-
 import markdown from 'markdown-it';
+
+import tw from '@/config/twrnc';
+import Spinner from './Spinner';
 
 let md = new markdown();
 
@@ -16,7 +16,6 @@ const customHTML = (text: string) => {
     <title>Caroro MarkdownView</title>
     <meta charset="UTF-8"></meta>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport"></meta>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.css" integrity="sha384-bYdxxUwYipFNohQlHt0bjN/LCpueqWz13HufFEV1SUatKs1cm4L6fFgCi1jT643X" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css" integrity="sha512-bm684OXnsiNuQSyrxuuwo4PHqr3OzxPpXyhT66DA/fhl73e1JmBxRKGnO/nRwWvOZxJLRCmNH7FII+Yn1JNPmg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   </head>
 

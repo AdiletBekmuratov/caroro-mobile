@@ -4,10 +4,11 @@ import {
   BottomTabParamList,
   MainBottomTabsScreenProps,
 } from './bottom.tab.type';
+import { Article } from './article.type';
 
 export type ArticlesStackParamList = {
   ArticlesScreen: undefined;
-  ArticleScreen: undefined;
+  ArticleScreen: { article: Article };
 };
 
 export type ArticlesStackScreenProps<T extends keyof ArticlesStackParamList> =

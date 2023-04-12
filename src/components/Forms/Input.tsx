@@ -8,16 +8,16 @@ import {
   View,
 } from 'react-native';
 import { MaskedTextInput, MaskedTextInputProps } from 'react-native-mask-text';
-import tw from 'twrnc';
 
 import { onPressVibrate } from '@/utils/vibration';
 import { IconButton } from './IconButton';
+import tw from '@/config/twrnc';
 
 interface IInputProps {
   label?: string;
   placeholder: string;
   onBlur?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
-  onChangeText: (
+  onChangeText?: (
     text: string,
   ) => void | ((masked: string, unmasked: string, obfuscated: string) => void);
   value?: string;
@@ -42,7 +42,7 @@ export const Input: FC<IInputProps> = ({
   keyboardType,
   activeColor,
   mask,
-  options
+  options,
 }) => {
   const [passwordVisible, setPasswordVisible] = useState(true);
   const [onFocus, setOnFocus] = useState(false);

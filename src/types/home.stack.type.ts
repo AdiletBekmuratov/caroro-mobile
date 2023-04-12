@@ -7,6 +7,7 @@ import {
 
 export type HomeStackParamList = {
   HomeScreen: undefined;
+  MakesScreen: undefined;
 };
 
 export type HomeStackScreenProps<T extends keyof HomeStackParamList> =

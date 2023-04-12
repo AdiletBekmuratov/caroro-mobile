@@ -1,7 +1,7 @@
+import tw from '@/config/twrnc';
 import { onPressVibrate } from '@/utils/vibration';
 import React, { FC, ReactNode } from 'react';
 import { GestureResponderEvent, Text, TouchableOpacity } from 'react-native';
-import tw from 'twrnc';
 
 interface ITextButtonProps {
   children?: ReactNode;

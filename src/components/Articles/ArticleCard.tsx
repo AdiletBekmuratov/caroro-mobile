@@ -1,21 +1,22 @@
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import tw from '@/config/twrnc';
+import { Article } from '@/types/index';
 import React, { FC } from 'react';
-import tw from 'twrnc';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 
-type ArticleCardProps = {
-  id: number;
-  image: string;
-  title: string;
-};
+type ArticleCardProps = Article & { onPress: () => void };
 
-export const ArticleCard: FC<ArticleCardProps> = ({ id, image, title }) => {
+export const ArticleCard: FC<ArticleCardProps> = props => {
   return (
-    <TouchableOpacity activeOpacity={0.5}>
+    <TouchableOpacity onPress={props.onPress} activeOpacity={0.5}>
       <View style={tw`w-full bg-white rounded-lg relative overflow-hidden`}>
-        <Image source={{ uri: image }} style={tw`w-full aspect-video`} />
-        <View style={tw`absolute inset-0 bg-black/10`}></View>
-        <Text style={tw`absolute m-5 text-white text-lg bottom-0 left-0`}>
-          {title}
+        <Image
+          source={{ uri: props.image_url }}
+          style={tw`w-full aspect-video`}
+        />
+        <Text
+          style={tw`text-white text-lg bg-black/10 p-4 absolute left-0 right-0 bottom-0 text-shadow`}
+        >
+          {props.title}
         </Text>
       </View>
     </TouchableOpacity>
