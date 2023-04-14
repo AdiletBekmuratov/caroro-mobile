@@ -34,9 +34,9 @@ export const RegisterScreen: FC<AuthStackScreenProps<'RegisterScreen'>> = ({
       confirm: '',
     },
   });
-  const onSubmit = (data: RegisterFormData) => {
+  const onSubmit = handleSubmit(data => {
     dispatch(register(data));
-  };
+  });
 
   return (
     <SafeAreaView style={tw`flex-1 p-5 bg-gray-100 w-full`}>
@@ -147,7 +147,7 @@ export const RegisterScreen: FC<AuthStackScreenProps<'RegisterScreen'>> = ({
       </ScrollView>
 
       <View style={tw`flex-grow bg-gray-100 mt-4`}>
-        <Button style="w-full mt-auto" onPress={handleSubmit(onSubmit)}>
+        <Button style="w-full mt-auto" onPress={onSubmit}>
           Начать
         </Button>
         <TextButton

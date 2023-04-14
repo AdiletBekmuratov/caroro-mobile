@@ -12,6 +12,7 @@ import AuthStack from '@/stacks/AuthStack';
 import MainBottomTabs from '@/stacks/BottomStack';
 import MapScreenModal from './Maps/MapScreenModal';
 import tw from '@/config/twrnc';
+import OnboardingScreen from './OnBoardingScreen';
 
 export default function NavContainer() {
   const dispatch = useAppDispatch();
@@ -42,7 +43,14 @@ export default function NavContainer() {
         >
           {isLoading && <Spinner />}
           <MapScreenModal />
-          {token ? <MainBottomTabs /> : <AuthStack />}
+
+          {firstTime ? (
+            <OnboardingScreen />
+          ) : token ? (
+            <MainBottomTabs />
+          ) : (
+            <AuthStack />
+          )}
           <SnackBar />
         </KeyboardAvoidingView>
       </BottomSheetModalProvider>

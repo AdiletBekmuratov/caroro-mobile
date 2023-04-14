@@ -11,6 +11,7 @@ export * from './bottom.tab.type';
 
 export * from './login.screen.type';
 export * from './register.screen.type';
+export * from './edit-profile.screen.type';
 
 export * from './map-modals.type';
 export * from './pagination.type';

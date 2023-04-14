@@ -9,6 +9,7 @@ import {
 export type ProfileStackParamList = {
   ProfileScreen: undefined;
   DocumentUploadScreen: undefined;
+  EditProfileScreen: undefined;
 };
 
 export type ProfileStackScreenProps<T extends keyof ProfileStackParamList> =

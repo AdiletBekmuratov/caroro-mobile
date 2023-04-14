@@ -16,7 +16,11 @@ interface IButtonProps {
   disabled?: boolean;
   loading?: boolean;
   customChildren?: boolean;
+  mod?: 'solid' | 'outlined';
 }
+
+const solidBtnStyle = 'bg-black';
+const outlinedBtnStyle = 'bg-white border border-2 border-black';
 
 export const Button: FC<IButtonProps> = ({
   children,
@@ -25,17 +29,24 @@ export const Button: FC<IButtonProps> = ({
   disabled,
   loading,
   customChildren,
+  mod = 'solid',
 }) => {
   if (disabled || loading) {
     return (
       <View
-        style={tw`flex flex-row p-4 bg-gray-200 rounded-lg items-center ${style}`}
+        style={tw`flex flex-row p-4 rounded-lg items-center justify-center ${
+          mod === 'solid' ? solidBtnStyle : outlinedBtnStyle
+        } opacity-50 ${style}`}
       >
         {loading && <ActivityIndicator color="gray" size={16} />}
         {customChildren ? (
           children
         ) : (
-          <Text style={tw`text-gray-400 ${loading ? 'ml-2' : ''}`}>
+          <Text
+            style={tw`${mod === 'solid' ? 'text-white' : 'text-black'} ${
+              loading ? 'ml-2' : ''
+            }`}
+          >
             {children}
           </Text>
         )}
@@ -44,7 +55,9 @@ export const Button: FC<IButtonProps> = ({
   }
   return (
     <TouchableOpacity
-      style={tw`p-4 rounded-lg bg-black items-center ${style}`}
+      style={tw`p-4 rounded-lg items-center ${
+        mod === 'solid' ? solidBtnStyle : outlinedBtnStyle
+      } ${style}`}
       onPress={() => onPressVibrate(onPress)}
       activeOpacity={0.5}
       disabled={disabled}
@@ -52,7 +65,13 @@ export const Button: FC<IButtonProps> = ({
       {customChildren ? (
         children
       ) : (
-        <Text style={tw`text-white`}>{children}</Text>
+        <Text
+          style={tw`text-white ${
+            mod === 'solid' ? 'text-white' : 'text-black'
+          }`}
+        >
+          {children}
+        </Text>
       )}
     </TouchableOpacity>
   );

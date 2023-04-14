@@ -1,8 +1,13 @@
 import React, { FC, useMemo, useState } from 'react';
-import { Image, Text, View, Switch, ScrollView } from 'react-native';
+import { Image, Text, View, ScrollView } from 'react-native';
 import tw from '@/config/twrnc';
 
-import { ButtonGroup, IButtonGroup, IconButton } from '@/components/Forms';
+import {
+  ButtonGroup,
+  IButtonGroup,
+  IconButton,
+  Switch,
+} from '@/components/Forms';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { logout } from '@/redux/slices/auth';
 import { ProfileStackScreenProps } from '@/types/index';
@@ -32,8 +37,8 @@ export const ProfileScreen: FC<ProfileStackScreenProps<'ProfileScreen'>> = ({
         onPress: () => navigation.navigate('DocumentUploadScreen'),
       },
       {
-        children: <Text>Уведомления</Text>,
-        onPress: () => {},
+        children: <Text>Изменение данных аккаунта</Text>,
+        onPress: () => navigation.navigate('EditProfileScreen'),
       },
       {
         children: <Text style={tw`text-red-400`}>Выйти</Text>,
@@ -49,12 +54,7 @@ export const ProfileScreen: FC<ProfileStackScreenProps<'ProfileScreen'>> = ({
         children: (
           <View style={tw`flex-row justify-between items-center -mx-1 -my-2`}>
             <Text>Вибрация</Text>
-            <Switch
-              value={vibrateLocal}
-              onValueChange={handleVibrate}
-              thumbColor="#262626"
-              trackColor={{ false: '#d9d9d9', true: '#7b7b7b' }}
-            />
+            <Switch value={vibrateLocal} onValueChange={handleVibrate} />
           </View>
         ),
       },

@@ -29,9 +29,9 @@ export const LoginScreen: FC<AuthStackScreenProps<'LoginScreen'>> = ({
       password: '',
     },
   });
-  const onSubmit = (data: LoginFormData) => {
+  const onSubmit = handleSubmit(data => {
     dispatch(login(data));
-  };
+  });
 
   return (
     <SafeAreaView style={tw`flex-1 p-5 bg-gray-100 w-full`}>
@@ -81,7 +81,7 @@ export const LoginScreen: FC<AuthStackScreenProps<'LoginScreen'>> = ({
       </TextButton>
 
       <View style={tw`flex-grow bg-gray-100 mt-4`}>
-        <Button style="w-full mt-auto" onPress={handleSubmit(onSubmit)}>
+        <Button style="w-full mt-auto" onPress={onSubmit}>
           Отправить
         </Button>
         <TextButton

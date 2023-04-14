@@ -1,6 +1,10 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { DocumentUploadScreen, ProfileScreen } from '@/screens/Profile';
+import {
+  DocumentUploadScreen,
+  EditProfileScreen,
+  ProfileScreen,
+} from '@/screens/Profile';
 import { ProfileStackParamList } from '@/types/profile.stack.type';
 
 const Stack = createNativeStackNavigator<ProfileStackParamList>();
@@ -12,6 +16,11 @@ export default function ProfileStack() {
         name="ProfileScreen"
         options={{ title: 'Профиль' }}
         component={ProfileScreen}
+      />
+      <Stack.Screen
+        name="EditProfileScreen"
+        options={{ title: 'Изменение данных аккаунта' }}
+        component={EditProfileScreen}
       />
       <Stack.Screen
         name="DocumentUploadScreen"

@@ -1,3 +1,4 @@
+import ListFooterLoader from '@/components/ListFooterLoader';
 import Spinner from '@/components/Spinner';
 import tw from '@/config/twrnc';
 import { API_URL } from '@/redux/http';
@@ -9,11 +10,13 @@ export const MakesScreen = () => {
   const [page, setPage] = useState(1);
   const [callOnScrollEnd, setCallOnScrollEnd] = useState(false);
   const { data, isLoading, isFetching } = useGetCarBrandsQuery(
-    `page=${page}&limit=20`,
+    `page=${page}&limit=50`,
   );
 
   const fetchNextPage = () => {
-    setPage(data.meta.currentPage + 1);
+    if (data.meta.currentPage < data.meta.totalPages) {
+      setPage(data.meta.currentPage + 1);
+    }
   };
 
   if (isLoading) {
@@ -22,12 +25,12 @@ export const MakesScreen = () => {
 
   return (
     <View style={tw`flex-1 bg-gray-100 w-full`}>
-      {isFetching && <Spinner style="bg-transparent" pointerEvents="none" />}
       <FlatList
         data={data.data}
         contentContainerStyle={tw`p-5 gap-4`}
         initialNumToRender={10}
         onEndReachedThreshold={0.1}
+        ListFooterComponent={<ListFooterLoader visible={isFetching} />}
         onMomentumScrollBegin={() => {
           setCallOnScrollEnd(false);
         }}
