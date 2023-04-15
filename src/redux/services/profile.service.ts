@@ -17,7 +17,19 @@ export const profileApi = baseApi
         }),
         invalidatesTags: ['User'],
       }),
+      uploadDriverLicense: builder.mutation<User, FormData>({
+        query: body => ({
+          url: `/users/upload/licenses`,
+          method: 'POST',
+          body,
+        }),
+        invalidatesTags: ['User'],
+      }),
     }),
   });
 
-export const { useFindMeQuery, useUpdateProfileMutation } = profileApi;
+export const {
+  useFindMeQuery,
+  useUpdateProfileMutation,
+  useUploadDriverLicenseMutation,
+} = profileApi;

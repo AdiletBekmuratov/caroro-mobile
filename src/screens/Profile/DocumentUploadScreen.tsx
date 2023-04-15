@@ -5,12 +5,14 @@ import * as ImagePicker from 'expo-image-picker';
 import React, { FC, useState } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import tw from '@/config/twrnc';
+import { useUploadDriverLicenseMutation } from '@/redux/services/profile.service';
 // import { Image } from 'expo-image';
 
 export const DocumentUploadScreen: FC<
   ProfileStackScreenProps<'DocumentUploadScreen'>
 > = ({ navigation }) => {
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState<string>(null);
+  const [uploadLicense, { isLoading }] = useUploadDriverLicenseMutation();
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -24,13 +26,23 @@ export const DocumentUploadScreen: FC<
     }
 
     let localUri = result.assets[0].uri;
-    let filename = localUri.split('/').pop();
-
-    let formData = new FormData();
-    formData.append('photo', localUri, filename);
-
     setImage(localUri);
   };
+
+  const handleUpload = () => {
+    let formData = new FormData();
+    const fileName = image.split('/').pop();
+    const fileType = fileName.split('.').pop();
+
+    formData.append('image', {
+      // @ts-ignore
+      uri: image,
+      name: fileName,
+      type: `image/${fileType}`,
+    });
+    uploadLicense(formData);
+  };
+
   return (
     <View style={tw`flex-1 p-5 bg-gray-100 w-full`}>
       <Text style={tw`text-xl text-center font-bold`}>
@@ -53,8 +65,13 @@ export const DocumentUploadScreen: FC<
           </View>
         </TouchableOpacity>
       )}
-      <Button style="mt-5" onPress={() => navigation.goBack()}>
-        Пропустить
+      <Button
+        style="mt-5"
+        onPress={handleUpload}
+        loading={isLoading}
+        disabled={!image}
+      >
+        Загрузить
       </Button>
     </View>
   );
