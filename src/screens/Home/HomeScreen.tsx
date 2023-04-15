@@ -1,11 +1,12 @@
-import { TextButton } from '@/components/Forms';
+import { Button, TextButton } from '@/components/Forms';
 import { API_URL } from '@/redux/http';
 import { useGetCarBrandsQuery } from '@/redux/services/makes.service';
 import React, { FC } from 'react';
-import { FlatList, Image, Text, View } from 'react-native';
+import { FlatList, Image, ScrollView, Text, View } from 'react-native';
 import tw from '@/config/twrnc';
 import { HomeStackScreenProps } from '@/types/home.stack.type';
 import Spinner from '@/components/Spinner';
+import { Card } from '@/components/Vehicles';
 
 export const HomeScreen: FC<HomeStackScreenProps<'HomeScreen'>> = ({
   navigation,
@@ -17,7 +18,7 @@ export const HomeScreen: FC<HomeStackScreenProps<'HomeScreen'>> = ({
   }
 
   return (
-    <View style={tw`flex-1 p-5 bg-gray-100 w-full`}>
+    <ScrollView style={tw`flex-1 p-5 bg-gray-100 w-full`}>
       <View style={tw``}>
         <View style={tw`flex-row justify-between items-center`}>
           <Text style={tw`text-3xl font-bold`}>Бренды</Text>
@@ -49,15 +50,26 @@ export const HomeScreen: FC<HomeStackScreenProps<'HomeScreen'>> = ({
 
                 <View style={tw`bg-white items-center`}>
                   <Text style={tw`text-lg capitalize`}>{item.name}</Text>
-                  {/* <Text style={tw`font-bold text-xl text-blue-500`}>
-                    +{item.num_models}
-                  </Text> */}
                 </View>
               </View>
             )}
           />
         </View>
       </View>
-    </View>
+
+      <View style={tw`my-8`}>
+        <View style={tw`flex-row justify-between items-center`}>
+          <Text style={tw`text-3xl font-bold`}>Популярное</Text>
+          <TextButton onPress={() => navigation.navigate('MakesScreen')}>
+            Все
+          </TextButton>
+        </View>
+        <View style={tw`pt-5 gap-5`}>
+          {new Array(10).fill(0).map((_, index) => (
+            <Card key={index} />
+          ))}
+        </View>
+      </View>
+    </ScrollView>
   );
 };

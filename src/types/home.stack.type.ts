@@ -8,6 +8,7 @@ import {
 export type HomeStackParamList = {
   HomeScreen: undefined;
   MakesScreen: undefined;
+  VehicleScreen: { vehicle: { title: string } };
 };
 
 export type HomeStackScreenProps<T extends keyof HomeStackParamList> =
