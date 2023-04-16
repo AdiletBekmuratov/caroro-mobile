@@ -1,7 +1,15 @@
 export * from './auth.type';
 export * from './snackbar.type';
 export * from './article.type';
+
 export * from './make.type';
+export * from './vehicle.type';
+export * from './company.type';
+export * from './vehicle-image.type';
+export * from './engine.type';
+export * from './gearbox.type';
+export * from './vehicle-type.type';
+export * from './category.type';
 
 export * from './auth.stack.type';
 export * from './home.stack.type';

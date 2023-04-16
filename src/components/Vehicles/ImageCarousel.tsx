@@ -1,11 +1,11 @@
+import React, { Dispatch, FC, SetStateAction } from 'react';
 import {
   Dimensions,
   FlatList,
   Image,
-  View,
   TouchableOpacity,
+  View,
 } from 'react-native';
-import React, { Dispatch, FC, SetStateAction } from 'react';
 
 import tw from '@/config/twrnc';
 import { ImageSource } from 'expo-image';
@@ -64,7 +64,6 @@ export const ImageCarousel: FC<ImageCarouselProps> = ({
       <View
         style={tw`flex-row justify-center items-center mt-5 absolute bottom-5 left-0 right-0 z-50`}
       >
-        {/* Render indicator */}
         {data.map((_, index) => (
           <View
             key={index}
