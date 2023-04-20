@@ -1,15 +1,6 @@
 import { Make, PaginatedResponse } from '@/types/index';
 import { baseApi } from './baseApi';
-
-const mergeArrays = (...arrays) => {
-  const merged = {};
-
-  arrays.forEach(data =>
-    data.forEach(o => Object.assign((merged[o.name] ??= {}), o)),
-  );
-
-  return Object.values(merged);
-};
+import { mergeArrays } from '@/utils/merge-arrays';
 
 export const makesApi = baseApi.injectEndpoints({
   endpoints: builder => ({

@@ -12,13 +12,13 @@ const { width, height } = Dimensions.get('window');
 type FooterProps = {
   currentSlideIndex: number;
   setCurrentSlideIndex: Dispatch<SetStateAction<number>>;
-  ref: MutableRefObject<FlatList>;
+  pageRef: MutableRefObject<FlatList>;
 };
 
 export const Footer: FC<FooterProps> = ({
   currentSlideIndex,
   setCurrentSlideIndex,
-  ref,
+  pageRef,
 }) => {
   const dispatch = useAppDispatch();
 
@@ -26,7 +26,7 @@ export const Footer: FC<FooterProps> = ({
     const nextSlideIndex = currentSlideIndex + 1;
     if (nextSlideIndex != slides.length) {
       const offset = nextSlideIndex * width;
-      ref?.current.scrollToOffset({ offset });
+      pageRef?.current.scrollToOffset({ offset });
       setCurrentSlideIndex(currentSlideIndex + 1);
     }
   };

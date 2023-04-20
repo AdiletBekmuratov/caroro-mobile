@@ -10,13 +10,16 @@ import {
 import tw from '@/config/twrnc';
 import { ImageSource } from 'expo-image';
 
-const { width, height } = Dimensions.get('window');
-
 type ImageCarouselProps = {
   data: ImageSource[];
   currentIndex: number;
   setCurrentIndex: Dispatch<SetStateAction<number>>;
-  setVisible: Dispatch<SetStateAction<boolean>>;
+  setVisible?: Dispatch<SetStateAction<boolean>>;
+  height: number;
+  width: number;
+  imageStyle?: string;
+  style?: string;
+  buttonStyle?: string;
 };
 
 export const ImageCarousel: FC<ImageCarouselProps> = ({
@@ -24,6 +27,11 @@ export const ImageCarousel: FC<ImageCarouselProps> = ({
   currentIndex,
   setCurrentIndex,
   setVisible,
+  height,
+  width,
+  imageStyle = '',
+  style = '',
+  buttonStyle = '',
 }) => {
   const updateCurrentSlideIndex = e => {
     const contentOffsetX = e.nativeEvent.contentOffset.x;
@@ -32,7 +40,9 @@ export const ImageCarousel: FC<ImageCarouselProps> = ({
   };
 
   const handlePress = () => {
-    setVisible(true);
+    if (setVisible) {
+      setVisible(true);
+    }
   };
 
   return (
@@ -45,17 +55,23 @@ export const ImageCarousel: FC<ImageCarouselProps> = ({
         bounces={false}
         decelerationRate={0}
         snapToInterval={width}
+        contentContainerStyle={tw`${style}`}
         snapToAlignment="start"
         renderItem={({ item, index }) => (
-          <TouchableOpacity activeOpacity={0.5} onPress={handlePress}>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={handlePress}
+            style={tw`${buttonStyle}`}
+          >
             <Image
               source={item}
               style={[
                 {
                   width,
-                  height: height * 0.35,
+                  height,
                   resizeMode: 'cover',
                 },
+                tw`${imageStyle}`,
               ]}
             />
           </TouchableOpacity>

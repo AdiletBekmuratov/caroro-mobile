@@ -1,31 +1,58 @@
-import { View, Text, Image } from 'react-native';
-import React, { FC } from 'react';
+import { View, Text, Dimensions } from 'react-native';
+import React, { FC, useState } from 'react';
 import tw from '@/config/twrnc';
 import { Button } from '../Forms';
 import { HomeStackScreenProps } from '@/types/home.stack.type';
 import { useNavigation } from '@react-navigation/native';
+import { Vehicle } from '@/types/vehicle.type';
+import { ImageCarousel } from './ImageCarousel';
 
-export const Card = () => {
+const { width, height } = Dimensions.get('window');
+
+export const Card: FC<Vehicle> = ({
+  id,
+  model,
+  engine,
+  gearbox,
+  vehicleType,
+  images,
+}) => {
   const navigation =
     useNavigation<HomeStackScreenProps<'HomeScreen'>['navigation']>();
+  const [currentIndex, setCurrentIndex] = useState(0);
   return (
-    <View style={tw`flex-grow bg-white p-5 rounded-lg`}>
+    <View style={tw`flex-grow bg-white p-5 rounded-lg gap-4`}>
       <View style={tw`flex-row justify-between relative`}>
-        <Text style={tw`text-2xl w-1/2`}>S 500 Sedan</Text>
+        <Text style={tw`text-2xl font-bold`}>{model}</Text>
       </View>
-      <View style={tw`flex-row justify-center relative gap-2 mt-16`}>
-        <Text style={tw`text-gray-600`}>Автомат</Text>
-        <Text style={tw`text-gray-600`}>|</Text>
-        <Text style={tw`text-gray-600`}>4 сидения</Text>
-        <Text style={tw`text-gray-600`}>|</Text>
-        <Text style={tw`text-gray-600`}>Бензин</Text>
+      <View style={tw`rounded-lg overflow-hidden`}>
+        <ImageCarousel
+          width={width - 20 * 4}
+          height={150}
+          currentIndex={currentIndex}
+          setCurrentIndex={setCurrentIndex}
+          data={images.map(item => ({
+            uri: item.link.replace(
+              'http://localhost:3333',
+              'http://192.168.0.14:3333',
+            ),
+          }))}
+        />
       </View>
-      <View style={tw`flex-row relative gap-2 mt-8 w-2/3 mx-auto`}>
+
+      <View style={tw`flex-row relative gap-2`}>
+        <Text style={tw`text-gray-600`}>{gearbox.name}</Text>
+        <Text style={tw`text-gray-600`}>|</Text>
+        <Text style={tw`text-gray-600`}>{engine.name}</Text>
+        <Text style={tw`text-gray-600`}>|</Text>
+        <Text style={tw`text-gray-600`}>{vehicleType.name}</Text>
+      </View>
+      <View style={tw`flex-row relative gap-2`}>
         <Button
           mod="outlined"
           onPress={() =>
             navigation.navigate('VehicleScreen', {
-              vehicle: { title: 'S 500 Sedan' },
+              vehicle: { title: model, id },
             })
           }
           style="flex-1"
@@ -36,18 +63,6 @@ export const Card = () => {
           Заказать
         </Button>
       </View>
-      <Image
-        source={{
-          uri: 'https://purepng.com/public/uploads/large/51506279779c6rntanvyoznezpyppnhohayyxtzb1fw4pyobj8vrqyxl5jgyo0x8wqtg9rcqmi0ddeo5f0xplr20eua2fmf3maooz8epuincm94.png',
-        }}
-        style={[
-          tw`w-56 aspect-video absolute right-0 -top-5`,
-          {
-            resizeMode: 'contain',
-            transform: [{ rotateY: '180deg' }],
-          },
-        ]}
-      />
     </View>
   );
 };

@@ -3,6 +3,7 @@ import React, { FC } from 'react';
 import tw from '@/config/twrnc';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useGetAddressFromLatLngQuery } from '@/redux/services/osm.service';
+import Spinner from '../Spinner';
 
 type LocationCardProps = {
   latLng: [number, number];
@@ -13,12 +14,16 @@ export const LocationCard: FC<LocationCardProps> = ({ latLng }) => {
     latLng,
   });
 
+  if (isLoading) {
+    return <Spinner />;
+  }
+
   return (
-    <View
-      style={tw`flex-row items-center gap-2 border border-[0.5px] border-gray-500 rounded-lg p-2`}
-    >
+    <View style={tw`bg-white flex-row items-center gap-2 rounded-lg p-2`}>
       <MaterialCommunityIcons name="map-marker-outline" style={tw`text-2xl`} />
-      <Text style={tw`text-base text-gray-500 flex-shrink`}>{data.display_name}</Text>
+      <Text style={tw`text-base text-gray-500 flex-shrink`}>
+        {data.display_name}
+      </Text>
     </View>
   );
 };

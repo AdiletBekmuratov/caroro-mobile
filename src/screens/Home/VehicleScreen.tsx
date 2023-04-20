@@ -1,33 +1,36 @@
 import React, { FC, useState } from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView, Text, View, Dimensions } from 'react-native';
 import ImageView from 'react-native-image-viewing';
 
 import { Button } from '@/components/Forms';
-import { ImageCarousel, SpecCard, LocationCard } from '@/components/Vehicles';
+import Spinner from '@/components/Spinner';
+import { ImageCarousel, LocationCard, SpecCard } from '@/components/Vehicles';
 import tw from '@/config/twrnc';
+import { useGetOneVehicleQuery } from '@/redux/services/vehicles.service';
 import { HomeStackScreenProps } from '@/types/home.stack.type';
-import { FlatList } from 'react-native-gesture-handler';
 
-const images = [
-  {
-    uri: 'https://images.unsplash.com/photo-1571501679680-de32f1e7aad4',
-  },
-  {
-    uri: 'https://images.unsplash.com/photo-1573273787173-0eb81a833b34',
-  },
-  {
-    uri: 'https://images.unsplash.com/photo-1569569970363-df7b6160d111',
-  },
-];
+const { width, height } = Dimensions.get('window');
 
-export const VehicleScreen: FC<HomeStackScreenProps<'VehicleScreen'>> = () => {
+export const VehicleScreen: FC<HomeStackScreenProps<'VehicleScreen'>> = ({
+  route,
+}) => {
+  const { data, isLoading } = useGetOneVehicleQuery(route.params.vehicle.id);
   const [visible, setIsVisible] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <View style={tw`flex-1 bg-gray-100 w-full`}>
       <ImageView
-        images={images}
+        images={data.images.map(item => ({
+          uri: item.link.replace(
+            'http://localhost:3333',
+            'http://192.168.0.14:3333',
+          ),
+        }))}
         imageIndex={currentIndex}
         visible={visible}
         onRequestClose={() => setIsVisible(false)}
@@ -38,42 +41,98 @@ export const VehicleScreen: FC<HomeStackScreenProps<'VehicleScreen'>> = () => {
             currentIndex={currentIndex}
             setCurrentIndex={setCurrentIndex}
             setVisible={setIsVisible}
-            data={images}
+            height={height * 0.35}
+            width={width}
+            data={data.images.map(item => ({
+              uri: item.link.replace(
+                'http://localhost:3333',
+                'http://192.168.0.14:3333',
+              ),
+            }))}
           />
         </View>
         <View style={tw`px-5 pb-5 gap-4`}>
           <View style={tw`gap-2`}>
+            <Text style={tw`text-xl font-bold`}>Описание</Text>
+            <Text style={tw`text-base`}>{data.description}</Text>
+          </View>
+
+          <View style={tw`gap-2`}>
             <Text style={tw`text-xl font-bold`}>Характеристики</Text>
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              directionalLockEnabled={true}
-              alwaysBounceVertical={false}
-            >
-              <FlatList
-                contentContainerStyle={tw`gap-2`}
-                numColumns={Math.ceil(new Array(10).fill(0).length / 2)}
-                showsVerticalScrollIndicator={false}
-                showsHorizontalScrollIndicator={false}
-                columnWrapperStyle={tw`gap-2`}
-                data={new Array(10).fill(0)}
-                renderItem={({ item }) => (
-                  <SpecCard title="Hello" description="World" />
-                )}
+            <View style={tw`gap-2 flex-row flex-wrap`}>
+              <SpecCard
+                title="Производитель"
+                description={data.make.name}
+                style="flex-grow"
               />
-            </ScrollView>
+              <SpecCard
+                title="Тип кузова"
+                description={data.vehicleType.name}
+                style="flex-grow"
+              />
+              <SpecCard
+                title="КПП"
+                description={data.gearbox.name}
+                style="flex-grow"
+              />
+              <SpecCard
+                title="Тип двигателя"
+                description={data.engine.name}
+                style="flex-grow"
+              />
+              <SpecCard
+                title="Год"
+                description={data.year.toString()}
+                style="flex-grow"
+              />
+              <SpecCard
+                title="Год"
+                description={data.plateNumber.toString()}
+                style="flex-grow"
+              />
+            </View>
+          </View>
+
+          <View style={tw`gap-2`}>
+            <Text style={tw`text-xl font-bold`}>Владелец</Text>
+            <View style={tw`gap-2 flex-row flex-wrap`}>
+              <SpecCard
+                title="Название"
+                description={data.company.name}
+                style="flex-grow"
+              />
+              <SpecCard
+                title="Email"
+                description={data.company.email}
+                style="flex-grow"
+              />
+              <SpecCard
+                title="Телефон"
+                description={data.company.phone}
+                style="flex-grow"
+              />
+              {data.company.address && (
+                <SpecCard
+                  title="Тип двигателя"
+                  description={data.company.address}
+                  style="flex-grow"
+                />
+              )}
+            </View>
           </View>
 
           <View style={tw`gap-2`}>
             <Text style={tw`text-xl font-bold`}>Локация</Text>
-            <LocationCard latLng={[51.0759203, 71.39658065]} />
+            <LocationCard latLng={[data.lat, data.lon]} />
           </View>
         </View>
       </ScrollView>
-      <View style={tw`flex-row justify-between items-center p-5 gap-2 bg-white`}>
+      <View
+        style={tw`flex-row justify-between items-center p-5 gap-2 bg-white`}
+      >
         <Text style={tw`font-bold text-2xl flex-1`}>
-          80 KZT{' '}
-          <Text style={tw`text-gray-500 font-normal text-xl`}>/ час</Text>
+          {data.price} KZT{' '}
+          <Text style={tw`text-gray-500 font-normal text-xl`}>/ мин</Text>
         </Text>
         <Button style="flex-1" onPress={() => {}}>
           Заказать

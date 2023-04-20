@@ -2,14 +2,22 @@ import { Footer, Slide } from '@/components/OnBoarding';
 import tw from '@/config/twrnc';
 import { slides } from '@/utils/slides';
 import React, { useRef, useState } from 'react';
-import { Dimensions, FlatList, SafeAreaView } from 'react-native';
+import {
+  Dimensions,
+  FlatList,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  SafeAreaView,
+} from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 
 const OnboardingScreen = () => {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const ref = useRef<FlatList>();
-  const updateCurrentSlideIndex = e => {
+  const updateCurrentSlideIndex = (
+    e: NativeSyntheticEvent<NativeScrollEvent>,
+  ) => {
     const contentOffsetX = e.nativeEvent.contentOffset.x;
     const currentIndex = Math.round(contentOffsetX / width);
     setCurrentSlideIndex(currentIndex);
@@ -29,7 +37,7 @@ const OnboardingScreen = () => {
       />
       <Footer
         currentSlideIndex={currentSlideIndex}
-        ref={ref}
+        pageRef={ref}
         setCurrentSlideIndex={setCurrentSlideIndex}
       />
     </SafeAreaView>

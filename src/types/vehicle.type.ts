@@ -8,7 +8,6 @@ import { VehicleType } from './vehicle-type.type';
 
 export type Vehicle = {
   id: number;
-  slug: string;
   company: Company;
   vin: string;
   make?: Make | null;

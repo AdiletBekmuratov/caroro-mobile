@@ -7,13 +7,16 @@ import tw from '@/config/twrnc';
 import { HomeStackScreenProps } from '@/types/home.stack.type';
 import Spinner from '@/components/Spinner';
 import { Card } from '@/components/Vehicles';
+import { useGetAllVehiclesQuery } from '@/redux/services/vehicles.service';
 
 export const HomeScreen: FC<HomeStackScreenProps<'HomeScreen'>> = ({
   navigation,
 }) => {
-  const { data: carData, isLoading } = useGetCarBrandsQuery('page=1&limit=10');
+  const { data: makeData, isLoading } = useGetCarBrandsQuery('page=1&limit=10');
+  const { data: vehiclesData, isLoading: isLoadingVehicles } =
+    useGetAllVehiclesQuery('page=1&limit=10');
 
-  if (isLoading) {
+  if (isLoading || isLoadingVehicles) {
     return <Spinner />;
   }
 
@@ -28,9 +31,9 @@ export const HomeScreen: FC<HomeStackScreenProps<'HomeScreen'>> = ({
         </View>
         <View style={tw`flex-row`}>
           <FlatList
-            data={carData.data.slice(0, 10)}
+            data={makeData.data.slice(0, 10)}
             horizontal
-            contentContainerStyle={tw`py-2`}
+            contentContainerStyle={tw``}
             showsHorizontalScrollIndicator={false}
             renderItem={({ item, index }) => (
               <View
@@ -65,8 +68,8 @@ export const HomeScreen: FC<HomeStackScreenProps<'HomeScreen'>> = ({
           </TextButton>
         </View>
         <View style={tw`pt-5 gap-5`}>
-          {new Array(10).fill(0).map((_, index) => (
-            <Card key={index} />
+          {vehiclesData.data.map((item, index) => (
+            <Card key={index} {...item} />
           ))}
         </View>
       </View>
