@@ -2,6 +2,7 @@ import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { NavigationContainer } from '@react-navigation/native';
 import React, { useEffect } from 'react';
 import { KeyboardAvoidingView, Platform } from 'react-native';
+import * as Location from 'expo-location';
 
 import SnackBar from '@/components/SnackBar';
 import Spinner from '@/components/Spinner';
@@ -13,6 +14,7 @@ import MainBottomTabs from '@/stacks/BottomStack';
 import MapScreenModal from './Maps/MapScreenModal';
 import tw from '@/config/twrnc';
 import OnboardingScreen from './OnBoardingScreen';
+import { addMessage } from '@/redux/slices/message';
 
 export default function NavContainer() {
   const dispatch = useAppDispatch();
@@ -24,6 +26,14 @@ export default function NavContainer() {
 
   useEffect(() => {
     const init = async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        dispatch(
+          addMessage({
+            message: 'Разрешение на доступ к местоположению было отклонено',
+          }),
+        );
+      }
       await dispatch(initSettings());
       await dispatch(addUser());
     };

@@ -7,6 +7,7 @@ import { BottomTabParamList } from '../types';
 import ArticlesStack from './ArticlesStack';
 import HomeStack from './HomeStack';
 import ProfileStack from './ProfileStack';
+import HistoryStack from './HistoryStack';
 
 type MaterialIconName = ComponentProps<typeof MaterialIcons>['name'];
 type MaterialCommunityName = ComponentProps<typeof MaterialCommunity>['name'];
@@ -45,6 +46,24 @@ export default function MainBottomTabs() {
             let iconName: MaterialCommunityName = focused
               ? 'newspaper-variant'
               : 'newspaper-variant-outline';
+
+            return (
+              <MaterialCommunity name={iconName} size={size} color={color} />
+            );
+          },
+          tabBarActiveTintColor: '#000',
+          tabBarInactiveTintColor: 'gray',
+        }}
+      />
+      <Tab.Screen
+        name="HistoryStack"
+        component={HistoryStack}
+        options={{
+          title: 'История',
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName: MaterialCommunityName = focused
+              ? 'clock'
+              : 'clock-outline';
 
             return (
               <MaterialCommunity name={iconName} size={size} color={color} />

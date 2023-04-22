@@ -4,11 +4,13 @@ import { NavigatorScreenParams } from '@react-navigation/native';
 import { ArticlesStackParamList } from './articles.stack.type';
 import { HomeStackParamList } from './home.stack.type';
 import { ProfileStackParamList } from './profile.stack.type';
+import { HistoryStackParamList } from './history.stack.type';
 
 export type BottomTabParamList = {
   HomeStack: NavigatorScreenParams<HomeStackParamList>;
   ArticlesStack: NavigatorScreenParams<ArticlesStackParamList>;
   ProfileStack: NavigatorScreenParams<ProfileStackParamList>;
+  HistoryStack: NavigatorScreenParams<HistoryStackParamList>;
 };
 
 export type MainBottomTabsScreenProps<T extends keyof BottomTabParamList> =

@@ -18,7 +18,7 @@ const useCountdown = (targetDate: number) => {
   return getReturnValues(countDown);
 };
 
-function padWithLeadingZeros(num, totalLength) {
+function padWithLeadingZeros(num: number, totalLength: number) {
   return String(num).padStart(totalLength, '0');
 }
 
@@ -29,13 +29,15 @@ const getReturnValues = (countDown: number) => {
   );
   const minutes = Math.floor((countDown % (1000 * 60 * 60)) / (1000 * 60));
   const seconds = Math.floor((countDown % (1000 * 60)) / 1000);
-
-  return [
-    days,
-    padWithLeadingZeros(hours, 2),
-    padWithLeadingZeros(minutes, 2),
-    padWithLeadingZeros(seconds, 2),
-  ];
+  const isComplete =
+    days === 0 && hours === 0 && minutes === 0 && seconds === 0;
+  return {
+    dd: days,
+    hh: padWithLeadingZeros(hours, 2),
+    mm: padWithLeadingZeros(minutes, 2),
+    ss: padWithLeadingZeros(seconds, 2),
+    isComplete,
+  };
 };
 
 export { useCountdown };

@@ -1,2 +1,3 @@
 export * from './useToggle';
-export * from './useCountown';
+export * from './useCountdown';
+export * from './useCountup';

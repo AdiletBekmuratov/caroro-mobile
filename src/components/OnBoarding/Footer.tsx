@@ -24,9 +24,8 @@ export const Footer: FC<FooterProps> = ({
 
   const goToNextSlide = () => {
     const nextSlideIndex = currentSlideIndex + 1;
-    if (nextSlideIndex != slides.length) {
-      const offset = nextSlideIndex * width;
-      pageRef?.current.scrollToOffset({ offset });
+    if (nextSlideIndex !== slides.length) {
+      pageRef?.current.scrollToIndex({ index: nextSlideIndex });
       setCurrentSlideIndex(currentSlideIndex + 1);
     }
   };

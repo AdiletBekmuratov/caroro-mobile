@@ -1,6 +1,7 @@
 import React, { FC, useState } from 'react';
 import { ScrollView, Text, View, Dimensions } from 'react-native';
 import ImageView from 'react-native-image-viewing';
+import * as Location from 'expo-location';
 
 import { Button } from '@/components/Forms';
 import Spinner from '@/components/Spinner';
@@ -8,15 +9,38 @@ import { ImageCarousel, LocationCard, SpecCard } from '@/components/Vehicles';
 import tw from '@/config/twrnc';
 import { useGetOneVehicleQuery } from '@/redux/services/vehicles.service';
 import { HomeStackScreenProps } from '@/types/home.stack.type';
+import { useAppDispatch } from '@/redux/hooks';
+import { addMessage } from '@/redux/slices/message';
+import { useCreateOrderMutation } from '@/redux/services/order.service';
+import { openWaitModalScreen } from '@/redux/slices/mapModals';
 
 const { width, height } = Dimensions.get('window');
 
 export const VehicleScreen: FC<HomeStackScreenProps<'VehicleScreen'>> = ({
   route,
 }) => {
+  const dispatch = useAppDispatch();
   const { data, isLoading } = useGetOneVehicleQuery(route.params.vehicle.id);
+  const [createOrder] = useCreateOrderMutation();
   const [visible, setIsVisible] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  const handleCreateOrder = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+      dispatch(
+        addMessage({
+          message: 'Разрешение на доступ к местоположению было отклонено',
+        }),
+      );
+      return;
+    }
+    const order = await createOrder({
+      companyId: data?.companyId,
+      vehicleId: data?.id,
+    }).unwrap();
+    dispatch(openWaitModalScreen({ orderId: order.id }));
+  };
 
   if (isLoading) {
     return <Spinner />;
@@ -134,7 +158,7 @@ export const VehicleScreen: FC<HomeStackScreenProps<'VehicleScreen'>> = ({
           {data.price} KZT{' '}
           <Text style={tw`text-gray-500 font-normal text-xl`}>/ мин</Text>
         </Text>
-        <Button style="flex-1" onPress={() => {}}>
+        <Button style="flex-1" onPress={handleCreateOrder}>
           Заказать
         </Button>
       </View>

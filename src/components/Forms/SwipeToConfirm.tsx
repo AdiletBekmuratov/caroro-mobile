@@ -168,7 +168,7 @@ export const SwipeToConfirm = (props: Props) => {
   return (
     <View
       style={[
-        tw`w-full rounded-xl bg-black relative items-center justify-center h-12`,
+        tw`w-full rounded-lg bg-black relative items-center justify-center h-12`,
         containerStyle,
       ]}
       onLayout={event =>

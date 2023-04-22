@@ -19,7 +19,7 @@ type SlideProps = {
 
 export const Slide: FC<SlideProps> = item => {
   return (
-    <View style={tw`items-center flex-1`}>
+    <View style={tw`items-center flex-1 w-full`}>
       <Image
         source={item.image}
         style={{ height: '75%', width: width - 40, resizeMode: 'contain' }}
