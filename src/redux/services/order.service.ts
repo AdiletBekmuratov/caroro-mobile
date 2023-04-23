@@ -27,21 +27,25 @@ export const ordersApi = baseApi
           url: `/orders/start/${id}`,
           method: 'POST',
         }),
-        invalidatesTags: ['Orders'],
+        invalidatesTags: ['Orders', 'Vehicles'],
       }),
       cancelOrder: builder.mutation<void, number>({
         query: id => ({
           url: `/orders/cancel/${id}`,
           method: 'POST',
         }),
-        invalidatesTags: ['Orders'],
+        invalidatesTags: ['Orders', 'Vehicles'],
       }),
-      completeOrder: builder.mutation<void, number>({
-        query: id => ({
+      completeOrder: builder.mutation<
+        void,
+        { id: number; lat: number; lon: number }
+      >({
+        query: ({ id, ...rest }) => ({
           url: `/orders/complete/${id}`,
           method: 'POST',
+          body: rest,
         }),
-        invalidatesTags: ['Orders'],
+        invalidatesTags: ['Orders', 'Vehicles'],
       }),
     }),
   });

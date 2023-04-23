@@ -17,19 +17,12 @@ export const HomeScreen: FC<HomeStackScreenProps<'HomeScreen'>> = ({
   const { data: vehiclesData, isLoading: isLoadingVehicles } =
     useGetAllVehiclesQuery('page=1&limit=10');
 
-  const { dd, hh, mm, ss } = useCountup(
-    new Date('2023-04-22T13:40:35.151Z').getTime(),
-  );
-
   if (isLoading || isLoadingVehicles) {
     return <Spinner />;
   }
 
   return (
     <ScrollView style={tw`flex-1 p-5 bg-gray-100 w-full`}>
-      <View>
-        <Text>{`${dd}:${hh}:${mm}:${ss}`}</Text>
-      </View>
       <View style={tw``}>
         <View style={tw`flex-row justify-between items-center`}>
           <Text style={tw`text-3xl font-bold`}>Бренды</Text>

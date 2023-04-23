@@ -11,10 +11,11 @@ import { addUser } from '@/redux/slices/auth';
 import { initSettings } from '@/redux/slices/settings';
 import AuthStack from '@/stacks/AuthStack';
 import MainBottomTabs from '@/stacks/BottomStack';
-import MapScreenModal from './Maps/MapScreenModal';
 import tw from '@/config/twrnc';
 import OnboardingScreen from './OnBoardingScreen';
 import { addMessage } from '@/redux/slices/message';
+import { PendingMapScreenModal } from './Maps';
+import { InProgressMapScreenModal } from './Maps/InProgressMapScreenModal';
 
 export default function NavContainer() {
   const dispatch = useAppDispatch();
@@ -52,8 +53,8 @@ export default function NavContainer() {
           style={tw`flex-1 relative`}
         >
           {isLoading && <Spinner />}
-          <MapScreenModal />
-
+          <PendingMapScreenModal />
+          <InProgressMapScreenModal />
           {firstTime ? (
             <OnboardingScreen />
           ) : token ? (

@@ -1,32 +1,37 @@
 import tw from '@/config/twrnc';
-import MapScreen from '@/screens/Maps/MapScreenModal';
 import { Portal } from '@gorhom/portal';
 import React, { FC, ReactNode } from 'react';
-import { TouchableWithoutFeedback, View } from 'react-native';
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import { Modal, TouchableWithoutFeedback } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type IModalProps = {
   children?: ReactNode;
   visible: boolean;
+  onRequestClose: () => void;
 };
 
-const FullScreenModal: FC<IModalProps> = ({ children, visible }) => {
-  if (!visible) {
-    return <></>;
-  }
-
+const FullScreenModal: FC<IModalProps> = ({
+  children,
+  visible,
+  onRequestClose,
+}) => {
   return (
     <Portal>
-      <TouchableWithoutFeedback
-        style={tw`absolute inset-0 items-center justify-center`}
+      <Modal
+        visible={visible}
+        presentationStyle="fullScreen"
+        onRequestClose={onRequestClose}
       >
-        <SafeAreaView style={tw`absolute inset-0 items-center justify-center`}>
-          {children}
-        </SafeAreaView>
-      </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback
+          style={tw`absolute inset-0 items-center justify-center`}
+        >
+          <SafeAreaView
+            style={tw`absolute inset-0 items-center justify-center`}
+          >
+            {children}
+          </SafeAreaView>
+        </TouchableWithoutFeedback>
+      </Modal>
     </Portal>
   );
 };

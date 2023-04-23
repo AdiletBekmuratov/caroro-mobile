@@ -1,4 +1,5 @@
 export type MapModals = {
   orderId: number | null;
-  waitModalScreen: boolean;
+  pendingModalScreen: boolean;
+  inprogressModalScreen: boolean;
 };

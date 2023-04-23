@@ -12,7 +12,7 @@ import { HomeStackScreenProps } from '@/types/home.stack.type';
 import { useAppDispatch } from '@/redux/hooks';
 import { addMessage } from '@/redux/slices/message';
 import { useCreateOrderMutation } from '@/redux/services/order.service';
-import { openWaitModalScreen } from '@/redux/slices/mapModals';
+import { openPendingModalScreen } from '@/redux/slices/mapModals';
 
 const { width, height } = Dimensions.get('window');
 
@@ -39,7 +39,7 @@ export const VehicleScreen: FC<HomeStackScreenProps<'VehicleScreen'>> = ({
       companyId: data?.companyId,
       vehicleId: data?.id,
     }).unwrap();
-    dispatch(openWaitModalScreen({ orderId: order.id }));
+    dispatch(openPendingModalScreen({ orderId: order.id }));
   };
 
   if (isLoading) {
@@ -110,7 +110,7 @@ export const VehicleScreen: FC<HomeStackScreenProps<'VehicleScreen'>> = ({
                 style="flex-grow"
               />
               <SpecCard
-                title="Год"
+                title="Номер машины"
                 description={data.plateNumber.toString()}
                 style="flex-grow"
               />

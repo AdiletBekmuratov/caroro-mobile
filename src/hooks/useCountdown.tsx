@@ -29,8 +29,7 @@ const getReturnValues = (countDown: number) => {
   );
   const minutes = Math.floor((countDown % (1000 * 60 * 60)) / (1000 * 60));
   const seconds = Math.floor((countDown % (1000 * 60)) / 1000);
-  const isComplete =
-    days === 0 && hours === 0 && minutes === 0 && seconds === 0;
+  const isComplete = days <= 0 && hours <= 0 && minutes <= 0 && seconds <= 0;
   return {
     dd: days,
     hh: padWithLeadingZeros(hours, 2),

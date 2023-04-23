@@ -14,16 +14,22 @@ import {
   useStartOrderMutation,
 } from '@/redux/services/order.service';
 import { useGetAddressFromLatLngQuery } from '@/redux/services/osm.service';
-import { closeAllMapModals } from '@/redux/slices/mapModals';
+import {
+  closeAllMapModals,
+  closePendingMapModalScreens,
+  openInProgressModalScreen,
+} from '@/redux/slices/mapModals';
 
-const MapScreen = () => {
+export const PendingMapScreenModal = () => {
   const dispatch = useAppDispatch();
 
   const MINUTES = useRef<number>(0);
   const [startOrder] = useStartOrderMutation();
   const [cancelOrder] = useCancelOrderMutation();
 
-  const { waitModalScreen, orderId } = useAppSelector(state => state.mapModals);
+  const { pendingModalScreen, orderId } = useAppSelector(
+    state => state.mapModals,
+  );
   const { data: order, isLoading: isLoadingOrder } = useGetOneOrderQuery(
     orderId,
     { skip: !orderId },
@@ -54,7 +60,10 @@ const MapScreen = () => {
 
   useEffect(() => {
     if (isComplete) {
-      console.log('finished');
+      startOrder(orderId).then(() => {
+        dispatch(openInProgressModalScreen({ orderId }));
+        dispatch(closePendingMapModalScreens());
+      });
     }
   }, [isComplete]);
 
@@ -66,7 +75,8 @@ const MapScreen = () => {
 
   const handleStartOrder = async () => {
     await startOrder(orderId).then(() => {
-      dispatch(closeAllMapModals());
+      dispatch(openInProgressModalScreen({ orderId }));
+      dispatch(closePendingMapModalScreens());
     });
   };
 
@@ -75,7 +85,10 @@ const MapScreen = () => {
   }
 
   return (
-    <FullScreenModal visible={waitModalScreen}>
+    <FullScreenModal
+      visible={pendingModalScreen}
+      onRequestClose={() => dispatch(closeAllMapModals())}
+    >
       <View style={tw`flex-1 relative w-full`}>
         <MapView
           style="h-full w-full"
@@ -140,5 +153,3 @@ const MapScreen = () => {
     </FullScreenModal>
   );
 };
-
-export default MapScreen;

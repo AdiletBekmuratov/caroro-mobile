@@ -34,7 +34,7 @@ export const Button: FC<IButtonProps> = ({
   if (disabled || loading) {
     return (
       <View
-        style={tw`flex flex-row p-4 rounded-lg items-center justify-center ${
+        style={tw`flex flex-row px-4 py-3 rounded-lg items-center justify-center ${
           mod === 'solid' ? solidBtnStyle : outlinedBtnStyle
         } opacity-50 ${style}`}
       >
@@ -55,7 +55,7 @@ export const Button: FC<IButtonProps> = ({
   }
   return (
     <TouchableOpacity
-      style={tw`p-4 rounded-lg items-center ${
+      style={tw`px-4 py-3 rounded-lg items-center ${
         mod === 'solid' ? solidBtnStyle : outlinedBtnStyle
       } ${style}`}
       onPress={() => onPressVibrate(onPress)}
