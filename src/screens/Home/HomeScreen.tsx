@@ -15,7 +15,7 @@ export const HomeScreen: FC<HomeStackScreenProps<'HomeScreen'>> = ({
 }) => {
   const { data: makeData, isLoading } = useGetCarBrandsQuery('page=1&limit=10');
   const { data: vehiclesData, isLoading: isLoadingVehicles } =
-    useGetAllVehiclesQuery('page=1&limit=10');
+    useGetAllVehiclesQuery('page=1&limit=10&filter.available=$eq:true&filter.enabled=$eq:true');
 
   if (isLoading || isLoadingVehicles) {
     return <Spinner />;
