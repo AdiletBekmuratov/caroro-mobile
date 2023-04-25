@@ -1,18 +1,16 @@
 import tw from '@/config/twrnc';
-import React, { useState } from 'react';
-import { Text, View } from 'react-native';
 import * as Location from 'expo-location';
+import React from 'react';
+import { Text, View } from 'react-native';
 
-import { Button, IconButton, Status, SwipeToConfirm } from '@/components/Forms';
+import { Button, IconButton } from '@/components/Forms';
 import FullScreenModal from '@/components/FullScreenModal';
 import Spinner from '@/components/Spinner';
 import { useCountup } from '@/hooks/index';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
-  useCancelOrderMutation,
   useCompleteOrderMutation,
   useGetOneOrderQuery,
-  useStartOrderMutation,
 } from '@/redux/services/order.service';
 import { closeAllMapModals } from '@/redux/slices/mapModals';
 import { addMessage } from '@/redux/slices/message';

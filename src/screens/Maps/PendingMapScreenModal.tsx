@@ -59,11 +59,8 @@ export const PendingMapScreenModal = () => {
   }, [order]);
 
   useEffect(() => {
-    if (isComplete) {
-      startOrder(orderId).then(() => {
-        dispatch(openInProgressModalScreen({ orderId }));
-        dispatch(closePendingMapModalScreens());
-      });
+    if (isComplete && order && orderId && !isLoadingOrder) {
+      handleStartOrder();
     }
   }, [isComplete]);
 

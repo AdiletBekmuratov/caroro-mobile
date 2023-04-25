@@ -12,6 +12,7 @@ const { width, height } = Dimensions.get('window');
 export const Card: FC<Vehicle> = ({
   id,
   model,
+  make,
   engine,
   gearbox,
   vehicleType,
@@ -23,7 +24,7 @@ export const Card: FC<Vehicle> = ({
   return (
     <View style={tw`flex-grow bg-white p-5 rounded-lg gap-4`}>
       <View style={tw`flex-row justify-between relative`}>
-        <Text style={tw`text-2xl font-bold`}>{model}</Text>
+        <Text style={tw`text-2xl font-bold`}>{`${make?.name} ${model}`}</Text>
       </View>
       <View style={tw`rounded-lg overflow-hidden`}>
         <ImageCarousel

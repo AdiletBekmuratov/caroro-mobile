@@ -1,21 +1,21 @@
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { NavigationContainer } from '@react-navigation/native';
+import * as Location from 'expo-location';
 import React, { useEffect } from 'react';
 import { KeyboardAvoidingView, Platform } from 'react-native';
-import * as Location from 'expo-location';
 
 import SnackBar from '@/components/SnackBar';
 import Spinner from '@/components/Spinner';
+import tw from '@/config/twrnc';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { addUser } from '@/redux/slices/auth';
+import { closeAllMapModals } from '@/redux/slices/mapModals';
+import { addMessage } from '@/redux/slices/message';
 import { initSettings } from '@/redux/slices/settings';
 import AuthStack from '@/stacks/AuthStack';
 import MainBottomTabs from '@/stacks/BottomStack';
-import tw from '@/config/twrnc';
 import OnboardingScreen from './OnBoardingScreen';
-import { addMessage } from '@/redux/slices/message';
-import { PendingMapScreenModal } from './Maps';
-import { InProgressMapScreenModal } from './Maps/InProgressMapScreenModal';
+import { MapModalsWrapper } from './Maps';
 
 export default function NavContainer() {
   const dispatch = useAppDispatch();
@@ -35,6 +35,7 @@ export default function NavContainer() {
           }),
         );
       }
+      dispatch(closeAllMapModals());
       await dispatch(initSettings());
       await dispatch(addUser());
     };
@@ -53,8 +54,7 @@ export default function NavContainer() {
           style={tw`flex-1 relative`}
         >
           {isLoading && <Spinner />}
-          <PendingMapScreenModal />
-          <InProgressMapScreenModal />
+          <MapModalsWrapper />
           {firstTime ? (
             <OnboardingScreen />
           ) : token ? (

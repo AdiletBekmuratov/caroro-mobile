@@ -10,10 +10,10 @@ export type PaginatedResponse<T> = {
     filter: object;
   };
   links: {
-    first: string;
-    previous: string;
-    current: string;
-    next: string;
-    last: string;
+    first?: string;
+    previous?: string;
+    current?: string;
+    next?: string;
+    last?: string;
   };
 };

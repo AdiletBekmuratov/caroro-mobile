@@ -1,57 +1,72 @@
 import { Input } from '@/components/Forms';
 import ListFooterLoader from '@/components/ListFooterLoader';
-import Spinner from '@/components/Spinner';
 import tw from '@/config/twrnc';
-import { useAppDispatch } from '@/redux/hooks';
 import { API_URL } from '@/redux/http';
-import { baseApi } from '@/redux/services/baseApi';
-import { useGetCarBrandsQuery } from '@/redux/services/makes.service';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { FlatList, Image, Text, View } from 'react-native';
+import { findPaginatedMakes } from '@/utils/api';
+import Spinner from '@/components/Spinner';
 
 export const MakesScreen = () => {
-  const dispatch = useAppDispatch();
-  const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [callOnScrollEnd, setCallOnScrollEnd] = useState(false);
-  const { data, isLoading, isFetching, refetch } = useGetCarBrandsQuery(
-    `page=${page}&limit=50&search=${search}`,
-  );
 
-  const fetchNextPage = () => {
-    if (data?.meta.currentPage < data?.meta.totalPages) {
-      setPage(data?.meta.currentPage + 1);
-    }
-  };
+  const {
+    data,
+    error,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    status,
+  } = useInfiniteQuery({
+    queryKey: ['makes', search],
+    queryFn: ({ pageParam }) =>
+      findPaginatedMakes({ page: pageParam, search, limit: 50 }),
+    getNextPageParam: (lastPageData, allPagesData) =>
+      lastPageData.meta?.currentPage !== lastPageData.meta.totalPages
+        ? lastPageData.meta.currentPage + 1
+        : undefined,
+  });
 
   const handleSearch = (text: string) => {
     setSearch(text);
-    dispatch(baseApi.util.resetApiState());
-    setPage(1);
-    refetch();
+  };
+
+  const loadMore = () => {
+    if (hasNextPage) {
+      fetchNextPage();
+    }
   };
 
   return (
     <View style={tw`flex-1 bg-gray-100 w-full`}>
       <View style={tw`p-5`}>
         <Input
-          placeholder="Search"
+          placeholder="Поиск"
           value={search}
           onChangeText={handleSearch}
         />
       </View>
+      {isLoading && (
+        <View style={tw`flex-grow relative`}>
+          <Spinner />
+        </View>
+      )}
       <FlatList
-        data={data?.data ?? []}
+        data={data?.pages.map(page => page.data).flat()}
         contentContainerStyle={tw`px-5 pb-5 gap-4`}
         initialNumToRender={10}
         onEndReachedThreshold={0.1}
-        ListFooterComponent={<ListFooterLoader visible={isFetching} />}
+        ListFooterComponent={<ListFooterLoader visible={isFetchingNextPage} />}
         onMomentumScrollBegin={() => {
           setCallOnScrollEnd(false);
         }}
         onEndReached={() => {
           if (!callOnScrollEnd) {
-            fetchNextPage();
+            loadMore();
             setCallOnScrollEnd(true);
           }
         }}

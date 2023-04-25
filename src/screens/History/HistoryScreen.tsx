@@ -19,7 +19,7 @@ export const HistoryScreen: FC<HistoryStackScreenProps<'HistoryScreen'>> = ({
   return (
     <ScrollView style={tw`flex-1 p-5 bg-gray-100 w-full`}>
       <View style={tw``}>
-        <View style={tw`pt-5 gap-5`}>
+        <View style={tw`gap-5`}>
           {data.map((item, index) => (
             <HistoryCard key={index} {...item} />
           ))}

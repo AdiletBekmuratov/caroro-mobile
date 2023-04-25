@@ -40,7 +40,7 @@ export const HistoryCard: FC<Order> = ({
   return (
     <View style={tw`flex-grow bg-white p-5 rounded-lg gap-4`}>
       <View style={tw`flex-row justify-between relative`}>
-        <Text style={tw`text-2xl font-bold`}>{vehicle.model}</Text>
+        <Text style={tw`text-2xl font-bold`}>{`${vehicle.make?.name} ${vehicle.model}`}</Text>
       </View>
 
       <View>

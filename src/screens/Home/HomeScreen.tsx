@@ -34,7 +34,7 @@ export const HomeScreen: FC<HomeStackScreenProps<'HomeScreen'>> = ({
           <FlatList
             data={makeData.data.slice(0, 10)}
             horizontal
-            contentContainerStyle={tw``}
+            contentContainerStyle={tw`pt-5`}
             showsHorizontalScrollIndicator={false}
             renderItem={({ item, index }) => (
               <View
