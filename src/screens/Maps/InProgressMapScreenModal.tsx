@@ -1,11 +1,12 @@
 import tw from '@/config/twrnc';
 import * as Location from 'expo-location';
-import React from 'react';
-import { Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { Dimensions, Text, View } from 'react-native';
 
 import { Button, IconButton } from '@/components/Forms';
 import FullScreenModal from '@/components/FullScreenModal';
 import Spinner from '@/components/Spinner';
+import { ImageCarousel } from '@/components/Vehicles';
 import { useCountup } from '@/hooks/index';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
@@ -15,8 +16,12 @@ import {
 import { closeAllMapModals } from '@/redux/slices/mapModals';
 import { addMessage } from '@/redux/slices/message';
 
+const { width } = Dimensions.get('window');
+
 export const InProgressMapScreenModal = () => {
   const dispatch = useAppDispatch();
+  const [currentIndex, setCurrentIndex] = useState(0);
+
   const [compeleteOrder] = useCompleteOrderMutation();
 
   const { inprogressModalScreen, orderId } = useAppSelector(
@@ -27,7 +32,7 @@ export const InProgressMapScreenModal = () => {
     { skip: !orderId },
   );
 
-  let { dd, hh, mm, ss } = useCountup(new Date(order?.startedAt).getTime());
+  let { dd, hh, mm, ss } = useCountup(order?.startedAt);
 
   const handleCompleteOrder = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
@@ -61,6 +66,30 @@ export const InProgressMapScreenModal = () => {
       onRequestClose={() => dispatch(closeAllMapModals())}
     >
       <View style={tw`flex-1 relative w-full p-5 gap-5`}>
+        <View style={tw`flex-row justify-between items-center`}>
+          <Text
+            style={tw`font-bold text-xl`}
+          >{`${order?.vehicle.make.name} ${order?.vehicle.model}`}</Text>
+          <Text style={tw`font-bold text-lg`}>
+            {order?.vehicle.plateNumber}
+          </Text>
+        </View>
+
+        <View style={tw`rounded-lg overflow-hidden`}>
+          <ImageCarousel
+            width={width - 20 * 2}
+            height={200}
+            currentIndex={currentIndex}
+            setCurrentIndex={setCurrentIndex}
+            data={order?.vehicle.images.map(item => ({
+              uri: item.link.replace(
+                'http://localhost:3333',
+                'http://192.168.0.14:3333',
+              ),
+            }))}
+          />
+        </View>
+
         <View style={tw`flex-row items-center gap-5`}>
           <IconButton
             size={18}
@@ -70,21 +99,31 @@ export const InProgressMapScreenModal = () => {
             disabled
           />
           <View>
-            <Text
-              style={tw`font-bold text-2xl`}
-            >{`${dd}:${hh}:${mm}:${ss}`}</Text>
+            <Text style={tw`font-bold text-2xl`}>
+              {`${dd}:${hh}:${mm}:${ss}`}
+            </Text>
             <Text style={tw`text-gray-500`}>Время поездки</Text>
           </View>
         </View>
 
-        <View style={tw`flex-row justify-between items-center`}>
-          <Text style={tw`font-bold text-lg`}>{order?.vehicle.model}</Text>
-          <Text style={tw`font-bold text-lg`}>
-            {order?.vehicle.plateNumber}
-          </Text>
+        <View style={tw`flex-row items-center gap-5`}>
+          <IconButton
+            size={18}
+            style="bg-black"
+            color="#fff"
+            iconset="MCI"
+            name="cash"
+            disabled
+          />
+          <View>
+            <Text style={tw`font-bold text-2xl`}>
+              {`${order?.vehicle.price}/мин`}
+            </Text>
+            <Text style={tw`text-gray-500`}>Аренда</Text>
+          </View>
         </View>
 
-        <View style={tw`gap-2`}>
+        <View style={tw`gap-2 mt-auto`}>
           <Button onPress={handleCompleteOrder}>Завершить поездку</Button>
         </View>
       </View>

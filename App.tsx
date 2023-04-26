@@ -1,12 +1,14 @@
-import store from './src/redux/store';
 import { PortalProvider } from '@gorhom/portal';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
-import NavContainer from './src/screens/NavContainer';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+
+import store from './src/redux/store';
+import NavContainer from './src/screens/NavContainer';
 
 const queryClient = new QueryClient();
 
@@ -17,8 +19,10 @@ export default function App() {
         <Provider store={store}>
           <QueryClientProvider client={queryClient}>
             <PortalProvider>
-              <StatusBar style="auto" />
-              <NavContainer />
+              <BottomSheetModalProvider>
+                <StatusBar style="auto" />
+                <NavContainer />
+              </BottomSheetModalProvider>
             </PortalProvider>
           </QueryClientProvider>
         </Provider>

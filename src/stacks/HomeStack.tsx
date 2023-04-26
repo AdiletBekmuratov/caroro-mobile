@@ -1,8 +1,7 @@
-import { HomeScreen, MakesScreen } from '@/screens/Home';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import { HomeScreen, MakesScreen, VehicleScreen } from '@/screens/Home';
 import { HomeStackParamList } from '../types';
-import { VehicleScreen } from '@/screens/Home/VehicleScreen';
 
 const Stack = createNativeStackNavigator<HomeStackParamList>();
 

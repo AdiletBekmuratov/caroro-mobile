@@ -14,7 +14,7 @@ export const ArticleCard: FC<ArticleCardProps> = props => {
           style={tw`w-full aspect-video`}
         />
         <Text
-          style={tw`text-white text-lg bg-black/10 p-4 absolute left-0 right-0 bottom-0 text-shadow`}
+          style={tw`text-white text-lg bg-black/10 p-4 absolute left-0 right-0 bottom-0 text-shadow leading-tight`}
         >
           {props.title}
         </Text>

@@ -25,6 +25,9 @@ export const mapModalsSlice = createSlice({
       state.inprogressModalScreen = true;
       state.orderId = action.payload.orderId;
     },
+    closePendingWithOrderMapModalScreens: state => {
+      state.pendingModalScreen = false;
+    },
     closePendingMapModalScreens: state => {
       state.orderId = null;
       state.pendingModalScreen = false;
@@ -44,6 +47,7 @@ export const mapModalsSlice = createSlice({
 
 export const {
   closeInProgressMapModalScreens,
+  closePendingWithOrderMapModalScreens,
   closePendingMapModalScreens,
   closeAllMapModals,
   openPendingModalScreen,

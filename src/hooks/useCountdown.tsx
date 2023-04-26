@@ -1,19 +1,36 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
-const useCountdown = (targetDate: number) => {
-  const countDownDate = new Date(targetDate).getTime();
+const useCountdown = (targetDate: string | null, add: number = 0) => {
+  const countDownDate = useMemo(
+    () => new Date(targetDate).getTime() + add,
+    [targetDate],
+  );
 
   const [countDown, setCountDown] = useState(
     countDownDate - new Date().getTime(),
   );
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCountDown(countDownDate - new Date().getTime());
-    }, 1000);
+    let interval: NodeJS.Timer;
+
+    if (targetDate) {
+      interval = setInterval(() => {
+        setCountDown(countDownDate - new Date().getTime());
+      }, 1000);
+    }
 
     return () => clearInterval(interval);
   }, [countDownDate]);
+
+  if (!targetDate) {
+    return {
+      dd: 0,
+      hh: padWithLeadingZeros(0, 2),
+      mm: padWithLeadingZeros(0, 2),
+      ss: padWithLeadingZeros(0, 2),
+      isComplete: false,
+    };
+  }
 
   return getReturnValues(countDown);
 };

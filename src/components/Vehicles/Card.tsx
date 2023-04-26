@@ -1,13 +1,19 @@
 import { View, Text, Dimensions } from 'react-native';
 import React, { FC, useState } from 'react';
+import * as Location from 'expo-location';
+
 import tw from '@/config/twrnc';
 import { Button } from '../Forms';
 import { HomeStackScreenProps } from '@/types/home.stack.type';
 import { useNavigation } from '@react-navigation/native';
 import { Vehicle } from '@/types/vehicle.type';
 import { ImageCarousel } from './ImageCarousel';
+import { useAppDispatch } from '@/redux/hooks';
+import { addMessage } from '@/redux/slices/message';
+import { useCreateOrderMutation } from '@/redux/services/order.service';
+import { openPendingModalScreen } from '@/redux/slices/mapModals';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 export const Card: FC<Vehicle> = ({
   id,
@@ -16,11 +22,32 @@ export const Card: FC<Vehicle> = ({
   engine,
   gearbox,
   vehicleType,
+  companyId,
   images,
 }) => {
+  const dispatch = useAppDispatch();
   const navigation =
     useNavigation<HomeStackScreenProps<'HomeScreen'>['navigation']>();
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [createOrder] = useCreateOrderMutation();
+
+  const handleCreateOrder = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+      dispatch(
+        addMessage({
+          message: 'Разрешение на доступ к местоположению было отклонено',
+        }),
+      );
+      return;
+    }
+    const order = await createOrder({
+      companyId: companyId,
+      vehicleId: id,
+    }).unwrap();
+    dispatch(openPendingModalScreen({ orderId: order.id }));
+  };
+
   return (
     <View style={tw`flex-grow bg-white p-5 rounded-lg gap-4`}>
       <View style={tw`flex-row justify-between relative`}>
@@ -60,7 +87,7 @@ export const Card: FC<Vehicle> = ({
         >
           Детали
         </Button>
-        <Button onPress={() => {}} style="flex-1">
+        <Button onPress={handleCreateOrder} style="flex-1">
           Заказать
         </Button>
       </View>

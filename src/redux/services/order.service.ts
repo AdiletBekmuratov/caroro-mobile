@@ -12,6 +12,7 @@ export const ordersApi = baseApi
           method: 'POST',
           body,
         }),
+        invalidatesTags: ['Orders', 'Vehicles'],
       }),
       getMyOrders: builder.query<Order[], void>({
         query: () => `/orders`,

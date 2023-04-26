@@ -14,7 +14,7 @@ export const ArticleScreen: FC<ArticlesStackScreenProps<'ArticleScreen'>> = ({
         source={{ uri: article.image_url }}
         style={tw`w-full aspect-video`}
       />
-      <MarkdownView style="w-full h-full" text={article.body} />
+      <MarkdownView style="flex-grow relative" text={article.body} />
     </View>
   );
 };

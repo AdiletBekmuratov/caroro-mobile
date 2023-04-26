@@ -1,5 +1,5 @@
 import tw from '@/config/twrnc';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 
 import { Button, IconButton, Status, SwipeToConfirm } from '@/components/Forms';
@@ -16,14 +16,13 @@ import {
 import { useGetAddressFromLatLngQuery } from '@/redux/services/osm.service';
 import {
   closeAllMapModals,
-  closePendingMapModalScreens,
+  closePendingWithOrderMapModalScreens,
   openInProgressModalScreen,
 } from '@/redux/slices/mapModals';
 
 export const PendingMapScreenModal = () => {
   const dispatch = useAppDispatch();
 
-  const MINUTES = useRef<number>(0);
   const [startOrder] = useStartOrderMutation();
   const [cancelOrder] = useCancelOrderMutation();
 
@@ -43,20 +42,7 @@ export const PendingMapScreenModal = () => {
     );
 
   const [status1, setStatus1] = useState(Status.Initial);
-  let { mm, ss, isComplete } = useCountdown(MINUTES.current);
-
-  useEffect(() => {
-    const getTime = () => {
-      let orderTime: number = 0;
-
-      orderTime = new Date(order?.createdAt).getTime() + 15 * 60 * 1000;
-      MINUTES.current = orderTime;
-    };
-    if (order && !isLoadingOrder) {
-      getTime();
-    }
-    return () => {};
-  }, [order]);
+  let { mm, ss, isComplete } = useCountdown(order?.createdAt, 15 * 60 * 1000);
 
   useEffect(() => {
     if (isComplete && order && orderId && !isLoadingOrder) {
@@ -73,7 +59,7 @@ export const PendingMapScreenModal = () => {
   const handleStartOrder = async () => {
     await startOrder(orderId).then(() => {
       dispatch(openInProgressModalScreen({ orderId }));
-      dispatch(closePendingMapModalScreens());
+      dispatch(closePendingWithOrderMapModalScreens());
     });
   };
 
@@ -103,9 +89,7 @@ export const PendingMapScreenModal = () => {
               disabled
             />
             <View>
-              {MINUTES.current > 0 && (
-                <Text style={tw`font-bold text-2xl`}>{`${mm}:${ss}`}</Text>
-              )}
+              <Text style={tw`font-bold text-2xl`}>{`${mm}:${ss}`}</Text>
               <Text style={tw`text-gray-500`}>Бесплатное ожидание</Text>
             </View>
           </View>
