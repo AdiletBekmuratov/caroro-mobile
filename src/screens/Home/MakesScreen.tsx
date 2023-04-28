@@ -1,35 +1,30 @@
 import { Input } from '@/components/Forms';
 import ListFooterLoader from '@/components/ListFooterLoader';
-import tw from '@/config/twrnc';
-import { API_URL } from '@/redux/http';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import React, { useState } from 'react';
-import { FlatList, Image, Text, View } from 'react-native';
-import { findPaginatedMakes } from '@/utils/api';
+import { MakeCard } from '@/components/Makes';
 import Spinner from '@/components/Spinner';
+import tw from '@/config/twrnc';
+import { HomeStackScreenProps } from '@/types/home.stack.type';
+import { findPaginatedMakes } from '@/utils/api';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import React, { FC, useState } from 'react';
+import { FlatList, View } from 'react-native';
 
-export const MakesScreen = () => {
+export const MakesScreen: FC<HomeStackScreenProps<'MakesScreen'>> = ({
+  navigation,
+}) => {
   const [search, setSearch] = useState('');
   const [callOnScrollEnd, setCallOnScrollEnd] = useState(false);
 
-  const {
-    data,
-    error,
-    isLoading,
-    fetchNextPage,
-    hasNextPage,
-    isFetching,
-    isFetchingNextPage,
-    status,
-  } = useInfiniteQuery({
-    queryKey: ['makes', search],
-    queryFn: ({ pageParam }) =>
-      findPaginatedMakes({ page: pageParam, search, limit: 50 }),
-    getNextPageParam: (lastPageData, allPagesData) =>
-      lastPageData.meta?.currentPage !== lastPageData.meta.totalPages
-        ? lastPageData.meta.currentPage + 1
-        : undefined,
-  });
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteQuery({
+      queryKey: ['makes', search],
+      queryFn: ({ pageParam }) =>
+        findPaginatedMakes({ page: pageParam, search, limit: 50 }),
+      getNextPageParam: (lastPageData, allPagesData) =>
+        lastPageData.meta?.currentPage !== lastPageData.meta.totalPages
+          ? lastPageData.meta.currentPage + 1
+          : undefined,
+    });
 
   const handleSearch = (text: string) => {
     setSearch(text);
@@ -44,11 +39,7 @@ export const MakesScreen = () => {
   return (
     <View style={tw`flex-1 bg-gray-100 w-full`}>
       <View style={tw`p-5`}>
-        <Input
-          placeholder="Поиск"
-          value={search}
-          onChangeText={handleSearch}
-        />
+        <Input placeholder="Поиск" value={search} onChangeText={handleSearch} />
       </View>
       {isLoading && (
         <View style={tw`flex-grow relative`}>
@@ -72,22 +63,16 @@ export const MakesScreen = () => {
         }}
         numColumns={2}
         renderItem={({ item, index }) => (
-          <View
-            style={tw`flex-1 bg-white px-4 py-2 items-center rounded-lg ${
-              index % 2 !== 0 ? 'ml-4' : ''
-            }`}
-          >
-            <Image
-              source={{
-                uri: item.image.replace('http://localhost:3333/api', API_URL),
-              }}
-              style={[tw`w-full aspect-video`, { resizeMode: 'contain' }]}
-            />
-
-            <View style={tw`bg-white items-center`}>
-              <Text style={tw`text-lg capitalize`}>{item.name}</Text>
-            </View>
-          </View>
+          <MakeCard
+            style={`flex-1 ${index % 2 === 0 ? 'mr-2' : 'ml-2'}`}
+            {...item}
+            onPress={() =>
+              navigation.navigate('VehiclesScreen', {
+                filters: `&filter.makeId=$eq:${item.id}`,
+                title: item.name,
+              })
+            }
+          />
         )}
       />
     </View>

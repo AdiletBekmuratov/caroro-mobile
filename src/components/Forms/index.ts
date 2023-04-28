@@ -5,3 +5,4 @@ export * from './TextButton';
 export * from './ButtonGroup';
 export * from './SwipeToConfirm';
 export * from './Switch';
+export * from './RadioGroup';

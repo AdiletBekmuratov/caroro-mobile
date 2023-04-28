@@ -17,12 +17,15 @@ import tw from 'twrnc';
 
 import { useAppDispatch } from '@/redux/hooks';
 
-interface IReportModal {
+interface FilterByModalProps {
   sheetRef?: MutableRefObject<BottomSheetModal>;
-  setSortBy: Dispatch<SetStateAction<string>>;
+  setFilterBy: Dispatch<SetStateAction<string>>;
 }
 
-export const ReportModal: FC<IReportModal> = ({ sheetRef, setSortBy }) => {
+export const FilterByModal: FC<FilterByModalProps> = ({
+  sheetRef,
+  setFilterBy,
+}) => {
   const dispatch = useAppDispatch();
   const snapPoints = useMemo(() => ['50%'], []);
 
@@ -39,7 +42,6 @@ export const ReportModal: FC<IReportModal> = ({ sheetRef, setSortBy }) => {
 
   return (
     <BottomSheetModal
-      detached
       index={0}
       ref={sheetRef}
       snapPoints={snapPoints}

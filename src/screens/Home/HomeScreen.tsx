@@ -1,14 +1,14 @@
 import React, { FC } from 'react';
-import { FlatList, Image, ScrollView, Text, View } from 'react-native';
+import { FlatList, ScrollView, Text, View } from 'react-native';
 
 import { TextButton } from '@/components/Forms';
 import Spinner from '@/components/Spinner';
 import { Card } from '@/components/Vehicles';
 import tw from '@/config/twrnc';
-import { API_URL } from '@/redux/http';
 import { useGetCarBrandsQuery } from '@/redux/services/makes.service';
 import { useGetAllVehiclesQuery } from '@/redux/services/vehicles.service';
 import { HomeStackScreenProps } from '@/types/home.stack.type';
+import { MakeCard } from '@/components/Makes';
 
 export const HomeScreen: FC<HomeStackScreenProps<'HomeScreen'>> = ({
   navigation,
@@ -35,29 +35,21 @@ export const HomeScreen: FC<HomeStackScreenProps<'HomeScreen'>> = ({
           </View>
           <View style={tw`flex-row`}>
             <FlatList
-              data={makeData.data.slice(0, 10)}
+              data={makeData.data}
               horizontal
               showsHorizontalScrollIndicator={false}
+              contentContainerStyle={tw`gap-4`}
               renderItem={({ item, index }) => (
-                <View
-                  style={tw`w-36 bg-white px-4 py-2 items-center rounded-lg ${
-                    index !== 0 ? 'ml-4' : ''
-                  }`}
-                >
-                  <Image
-                    source={{
-                      uri: item.image.replace(
-                        'http://localhost:3333/api',
-                        API_URL,
-                      ),
-                    }}
-                    style={[tw`h-24 w-full`, { resizeMode: 'contain' }]}
-                  />
-
-                  <View style={tw`bg-white items-center`}>
-                    <Text style={tw`text-lg capitalize`}>{item.name}</Text>
-                  </View>
-                </View>
+                <MakeCard
+                  {...item}
+                  style="w-36"
+                  onPress={() =>
+                    navigation.navigate('VehiclesScreen', {
+                      filters: `&filter.makeId=$eq:${item.id}`,
+                      title: item.name,
+                    })
+                  }
+                />
               )}
             />
           </View>
@@ -66,7 +58,7 @@ export const HomeScreen: FC<HomeStackScreenProps<'HomeScreen'>> = ({
         <View style={tw`gap-2`}>
           <View style={tw`flex-row justify-between items-center`}>
             <Text style={tw`text-3xl font-bold`}>Популярное</Text>
-            <TextButton onPress={() => navigation.navigate('MakesScreen')}>
+            <TextButton onPress={() => navigation.navigate('VehiclesScreen')}>
               Все
             </TextButton>
           </View>

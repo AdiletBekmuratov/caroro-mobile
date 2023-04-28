@@ -13,6 +13,7 @@ import { useAppDispatch } from '@/redux/hooks';
 import { addMessage } from '@/redux/slices/message';
 import { useCreateOrderMutation } from '@/redux/services/order.service';
 import { openPendingModalScreen } from '@/redux/slices/mapModals';
+import { API_URL } from '@/redux/http';
 
 const { width, height } = Dimensions.get('window');
 
@@ -50,10 +51,7 @@ export const VehicleScreen: FC<HomeStackScreenProps<'VehicleScreen'>> = ({
     <View style={tw`flex-1 bg-gray-100 w-full`}>
       <ImageView
         images={data.images.map(item => ({
-          uri: item.link.replace(
-            'http://localhost:3333',
-            'http://192.168.0.14:3333',
-          ),
+          uri: item.link.replace('http://localhost:3333/api', API_URL),
         }))}
         imageIndex={currentIndex}
         visible={visible}
@@ -69,8 +67,8 @@ export const VehicleScreen: FC<HomeStackScreenProps<'VehicleScreen'>> = ({
             width={width}
             data={data.images.map(item => ({
               uri: item.link.replace(
-                'http://localhost:3333',
-                'http://192.168.0.14:3333',
+                'http://localhost:3333/api',
+                API_URL,
               ),
             }))}
           />

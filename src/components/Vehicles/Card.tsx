@@ -12,6 +12,7 @@ import { useAppDispatch } from '@/redux/hooks';
 import { addMessage } from '@/redux/slices/message';
 import { useCreateOrderMutation } from '@/redux/services/order.service';
 import { openPendingModalScreen } from '@/redux/slices/mapModals';
+import { API_URL } from '@/redux/http';
 
 const { width } = Dimensions.get('window');
 
@@ -60,10 +61,7 @@ export const Card: FC<Vehicle> = ({
           currentIndex={currentIndex}
           setCurrentIndex={setCurrentIndex}
           data={images.map(item => ({
-            uri: item.link.replace(
-              'http://localhost:3333',
-              'http://192.168.0.14:3333',
-            ),
+            uri: item.link.replace('http://localhost:3333/api', API_URL),
           }))}
         />
       </View>

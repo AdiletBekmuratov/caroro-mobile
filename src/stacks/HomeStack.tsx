@@ -1,6 +1,11 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { HomeScreen, MakesScreen, VehicleScreen } from '@/screens/Home';
+import {
+  HomeScreen,
+  MakesScreen,
+  VehicleScreen,
+  VehiclesScreen,
+} from '@/screens/Home';
 import { HomeStackParamList } from '../types';
 
 const Stack = createNativeStackNavigator<HomeStackParamList>();
@@ -22,6 +27,13 @@ export default function HomeStack() {
         name="VehicleScreen"
         options={({ route }) => ({ title: route.params.vehicle.title })}
         component={VehicleScreen}
+      />
+      <Stack.Screen
+        name="VehiclesScreen"
+        options={({ route }) => ({
+          title: 'Все Автомобили ' + (route.params?.title ?? ''),
+        })}
+        component={VehiclesScreen}
       />
     </Stack.Navigator>
   );
