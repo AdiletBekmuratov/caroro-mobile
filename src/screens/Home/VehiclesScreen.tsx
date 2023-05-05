@@ -1,6 +1,7 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { FlatList, View } from 'react-native';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 
 import { IconButton, Input } from '@/components/Forms';
 import ListFooterLoader from '@/components/ListFooterLoader';
@@ -9,7 +10,11 @@ import { Card, FilterByModal, OrderByModal } from '@/components/Vehicles';
 import tw from '@/config/twrnc';
 import { findPaginatedVehicles } from '@/utils/api';
 import { HomeStackScreenProps } from '@/types/home.stack.type';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import {
+  useFindAllEnginesQuery,
+  useFindAllGaerBoxesQuery,
+  useFindAllVehicleTypesQuery,
+} from '@/redux/services/filter.service';
 
 export const VehiclesScreen: FC<HomeStackScreenProps<'VehiclesScreen'>> = ({
   navigation,
@@ -18,7 +23,11 @@ export const VehiclesScreen: FC<HomeStackScreenProps<'VehiclesScreen'>> = ({
   const filterBySheet = useRef<BottomSheetModal>();
   const orderBySheet = useRef<BottomSheetModal>();
 
-  const [filterBy, setFilterBy] = useState(route.params?.filters ?? '');
+  useFindAllEnginesQuery();
+  useFindAllGaerBoxesQuery();
+  useFindAllVehicleTypesQuery();
+
+  const [filterBy, setFilterBy] = useState('');
   const [orderBy, setOrderBy] = useState('&sortBy=createdAt:DESC');
 
   const [search, setSearch] = useState('');
@@ -32,7 +41,7 @@ export const VehiclesScreen: FC<HomeStackScreenProps<'VehiclesScreen'>> = ({
           page: pageParam,
           search,
           limit: 50,
-          query: `${filterBy}${orderBy}`,
+          query: `${route.params?.filters ?? ''}${filterBy}${orderBy}`,
         }),
       getNextPageParam: (lastPageData, allPagesData) =>
         lastPageData.meta?.currentPage !== lastPageData.meta.totalPages

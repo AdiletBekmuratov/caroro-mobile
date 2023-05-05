@@ -25,6 +25,7 @@ export const Card: FC<Vehicle> = ({
   vehicleType,
   companyId,
   images,
+  price,
 }) => {
   const dispatch = useAppDispatch();
   const navigation =
@@ -65,14 +66,20 @@ export const Card: FC<Vehicle> = ({
           }))}
         />
       </View>
-
-      <View style={tw`flex-row relative gap-2`}>
-        <Text style={tw`text-gray-600`}>{gearbox.name}</Text>
-        <Text style={tw`text-gray-600`}>|</Text>
-        <Text style={tw`text-gray-600`}>{engine.name}</Text>
-        <Text style={tw`text-gray-600`}>|</Text>
-        <Text style={tw`text-gray-600`}>{vehicleType.name}</Text>
+      <View style={tw`flex-row gap-2 justify-between items-end`}>
+        <View style={tw`flex-row gap-2`}>
+          <Text style={tw`text-gray-600`}>{gearbox.name}</Text>
+          <Text style={tw`text-gray-600`}>|</Text>
+          <Text style={tw`text-gray-600`}>{engine.name}</Text>
+          <Text style={tw`text-gray-600`}>|</Text>
+          <Text style={tw`text-gray-600`}>{vehicleType.name}</Text>
+        </View>
+        <Text style={tw`font-bold`}>
+          {price} KZT
+          <Text style={tw`text-gray-500 font-normal`}>/мин</Text>
+        </Text>
       </View>
+
       <View style={tw`flex-row relative gap-2`}>
         <Button
           mod="outlined"

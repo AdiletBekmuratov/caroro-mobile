@@ -6,3 +6,5 @@ export * from './ButtonGroup';
 export * from './SwipeToConfirm';
 export * from './Switch';
 export * from './RadioGroup';
+export * from './Slider';
+export * from './Picker';
