@@ -17,7 +17,7 @@ export const MakeCard: FC<MakeCardProps> = ({ style, onPress, ...item }) => {
     >
       <Image
         source={{
-          uri: item.image.replace('http://localhost:3333/api', API_URL),
+          uri: item.image,
         }}
         style={[tw`h-24 w-full`, { resizeMode: 'contain' }]}
       />

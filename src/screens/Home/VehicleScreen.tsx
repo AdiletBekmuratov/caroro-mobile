@@ -51,7 +51,7 @@ export const VehicleScreen: FC<HomeStackScreenProps<'VehicleScreen'>> = ({
     <View style={tw`flex-1 bg-gray-100 w-full`}>
       <ImageView
         images={data.images.map(item => ({
-          uri: item.link.replace('http://localhost:3333/api', API_URL),
+          uri: item.link,
         }))}
         imageIndex={currentIndex}
         visible={visible}

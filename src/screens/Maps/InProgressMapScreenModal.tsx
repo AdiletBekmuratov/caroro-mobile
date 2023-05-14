@@ -83,7 +83,7 @@ export const InProgressMapScreenModal = () => {
             currentIndex={currentIndex}
             setCurrentIndex={setCurrentIndex}
             data={order?.vehicle.images.map(item => ({
-              uri: item.link.replace('http://localhost:3333/api', API_URL),
+              uri: item.link,
             }))}
           />
         </View>
