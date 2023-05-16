@@ -28,7 +28,6 @@ const OnboardingScreen = () => {
       <FlatList
         ref={ref}
         onMomentumScrollEnd={updateCurrentSlideIndex}
-        contentContainerStyle={{ height: height * 0.75 }}
         showsHorizontalScrollIndicator={false}
         horizontal
         data={slides}
