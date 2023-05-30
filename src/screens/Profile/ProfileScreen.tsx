@@ -15,11 +15,15 @@ import { setVibrate } from '@/redux/slices/settings';
 import { useFindMeQuery } from '@/redux/services/profile.service';
 import Spinner from '@/components/Spinner';
 import { statusColor, translateStatus } from '@/utils/status-translate';
+import { useGetMyOrdersQuery } from '@/redux/services/order.service';
 
 export const ProfileScreen: FC<ProfileStackScreenProps<'ProfileScreen'>> = ({
   navigation,
 }) => {
   const dispatch = useAppDispatch();
+  const { data: dataOrders = [], isLoading: isLoadingOrders } =
+    useGetMyOrdersQuery();
+
   const { vibrate } = useAppSelector(state => state.settings);
   const [vibrateLocal, setVibrateLocal] = useState(vibrate);
 
@@ -62,7 +66,7 @@ export const ProfileScreen: FC<ProfileStackScreenProps<'ProfileScreen'>> = ({
     [vibrateLocal],
   );
 
-  if (isLoading) {
+  if (isLoading || isLoadingOrders) {
     return <Spinner />;
   }
 
@@ -97,7 +101,7 @@ export const ProfileScreen: FC<ProfileStackScreenProps<'ProfileScreen'>> = ({
             <View
               style={tw`bg-white rounded-lg items-center justify-center p-2 flex-grow`}
             >
-              <Text style={tw`text-lg text-center`}>12</Text>
+              <Text style={tw`text-lg text-center`}>{dataOrders.length}</Text>
               <Text style={tw`text-xs text-center text-gray-500`}>
                 Кол-во заказов
               </Text>

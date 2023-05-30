@@ -135,7 +135,7 @@ export const VehicleScreen: FC<HomeStackScreenProps<'VehicleScreen'>> = ({
               />
               {data.company.address && (
                 <SpecCard
-                  title="Тип двигателя"
+                  title="Адрес"
                   description={data.company.address}
                   style="flex-grow"
                 />

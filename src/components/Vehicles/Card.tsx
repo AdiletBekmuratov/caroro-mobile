@@ -66,7 +66,7 @@ export const Card: FC<Vehicle> = ({
           }))}
         />
       </View>
-      <View style={tw`flex-row gap-2 justify-between items-end`}>
+      <View style={tw`gap-2 justify-between items-end`}>
         <View style={tw`flex-row gap-2`}>
           <Text style={tw`text-gray-600`}>{gearbox.name}</Text>
           <Text style={tw`text-gray-600`}>|</Text>
