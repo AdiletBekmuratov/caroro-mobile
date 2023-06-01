@@ -16,6 +16,7 @@ import { useFindMeQuery } from '@/redux/services/profile.service';
 import Spinner from '@/components/Spinner';
 import { statusColor, translateStatus } from '@/utils/status-translate';
 import { useGetMyOrdersQuery } from '@/redux/services/order.service';
+import { baseApi } from '@/redux/services/baseApi';
 
 export const ProfileScreen: FC<ProfileStackScreenProps<'ProfileScreen'>> = ({
   navigation,
@@ -46,7 +47,10 @@ export const ProfileScreen: FC<ProfileStackScreenProps<'ProfileScreen'>> = ({
       },
       {
         children: <Text style={tw`text-red-400`}>Выйти</Text>,
-        onPress: () => dispatch(logout()),
+        onPress: () => {
+          dispatch(baseApi.util.resetApiState());
+          dispatch(logout());
+        },
       },
     ],
     [],
