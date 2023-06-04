@@ -1,6 +1,7 @@
 import React, { FC, useMemo, useState } from 'react';
 import { Image, Text, View, ScrollView } from 'react-native';
 import tw from '@/config/twrnc';
+import * as ImagePicker from 'expo-image-picker';
 
 import {
   ButtonGroup,
@@ -12,7 +13,10 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { logout } from '@/redux/slices/auth';
 import { ProfileStackScreenProps } from '@/types/index';
 import { setVibrate } from '@/redux/slices/settings';
-import { useFindMeQuery } from '@/redux/services/profile.service';
+import {
+  useFindMeQuery,
+  useUploadProfileImageMutation,
+} from '@/redux/services/profile.service';
 import Spinner from '@/components/Spinner';
 import { statusColor, translateStatus } from '@/utils/status-translate';
 import { useGetMyOrdersQuery } from '@/redux/services/order.service';
@@ -22,17 +26,45 @@ export const ProfileScreen: FC<ProfileStackScreenProps<'ProfileScreen'>> = ({
   navigation,
 }) => {
   const dispatch = useAppDispatch();
+  const { data, isLoading } = useFindMeQuery();
   const { data: dataOrders = [], isLoading: isLoadingOrders } =
     useGetMyOrdersQuery();
+  const [uploadProfileImage, { isLoading: isLoadingProfileImage }] =
+    useUploadProfileImageMutation();
 
   const { vibrate } = useAppSelector(state => state.settings);
   const [vibrateLocal, setVibrateLocal] = useState(vibrate);
-
-  const { data, isLoading } = useFindMeQuery();
+  const [image, setImage] = useState(data?.profileImage ?? '');
 
   const handleVibrate = async () => {
     setVibrateLocal(prev => !prev);
     dispatch(setVibrate(!vibrate));
+  };
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: false,
+      quality: 1,
+    });
+
+    if (result.canceled) {
+      return;
+    }
+
+    let localUri = result.assets[0].uri;
+    let formData = new FormData();
+    const fileName = localUri.split('/').pop();
+    const fileType = fileName.split('.').pop();
+
+    formData.append('image', {
+      // @ts-ignore
+      uri: image,
+      name: fileName,
+      type: `image/${fileType}`,
+    });
+    setImage(localUri);
+    uploadProfileImage(formData);
   };
 
   const buttons = useMemo<IButtonGroup['buttons']>(
@@ -81,12 +113,14 @@ export const ProfileScreen: FC<ProfileStackScreenProps<'ProfileScreen'>> = ({
           <View style={tw`w-2/5 relative`}>
             <Image
               source={{
-                uri: 'https://www.w3schools.com/howto/img_avatar.png',
+                uri:
+                  data?.profileImage ??
+                  'https://www.w3schools.com/howto/img_avatar.png',
               }}
               style={tw`w-full h-52 rounded-lg bg-white`}
             />
             <IconButton
-              onPress={() => {}}
+              onPress={pickImage}
               style="bg-white rounded-full items-center justify-center absolute -right-3 -top-3 p-2 shadow"
               name="cloud-upload"
             />

@@ -20,6 +20,7 @@ export type Vehicle = {
   lat: number;
   price: number;
   year: number;
+  distance?: number;
   otherInfo: {
     description: string;
     label: string;

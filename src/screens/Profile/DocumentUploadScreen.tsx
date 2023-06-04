@@ -5,13 +5,18 @@ import * as ImagePicker from 'expo-image-picker';
 import React, { FC, useState } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import tw from '@/config/twrnc';
-import { useUploadDriverLicenseMutation } from '@/redux/services/profile.service';
+import {
+  useFindMeQuery,
+  useUploadDriverLicenseMutation,
+} from '@/redux/services/profile.service';
 // import { Image } from 'expo-image';
 
 export const DocumentUploadScreen: FC<
   ProfileStackScreenProps<'DocumentUploadScreen'>
 > = ({ navigation }) => {
-  const [image, setImage] = useState<string>(null);
+  const { data, isLoading: isLoadingUser } = useFindMeQuery();
+
+  const [image, setImage] = useState<string>(data?.driverLicense ?? '');
   const [uploadLicense, { isLoading }] = useUploadDriverLicenseMutation();
 
   const pickImage = async () => {

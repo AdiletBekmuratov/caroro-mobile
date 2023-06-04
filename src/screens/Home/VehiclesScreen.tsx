@@ -2,6 +2,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { FlatList, View } from 'react-native';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import * as Location from 'expo-location';
 
 import { IconButton, Input } from '@/components/Forms';
 import ListFooterLoader from '@/components/ListFooterLoader';
@@ -15,11 +16,16 @@ import {
   useFindAllGaerBoxesQuery,
   useFindAllVehicleTypesQuery,
 } from '@/redux/services/filter.service';
+import { useAppDispatch } from '@/redux/hooks';
+import { addMessage } from '@/redux/slices/message';
 
 export const VehiclesScreen: FC<HomeStackScreenProps<'VehiclesScreen'>> = ({
   navigation,
   route,
 }) => {
+  const dispatch = useAppDispatch();
+  const [location, setLocation] = useState<Location.LocationObject>();
+
   const filterBySheet = useRef<BottomSheetModal>();
   const orderBySheet = useRef<BottomSheetModal>();
 
@@ -36,12 +42,15 @@ export const VehiclesScreen: FC<HomeStackScreenProps<'VehiclesScreen'>> = ({
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery({
       queryKey: ['vehicles', search, `${filterBy}${orderBy}`],
+      enabled: !!location,
       queryFn: ({ pageParam }) =>
         findPaginatedVehicles({
           page: pageParam,
           search,
           limit: 50,
-          query: `${route.params?.filters ?? ''}${filterBy}${orderBy}`,
+          query: `${route.params?.filters ?? ''}${filterBy}${orderBy}&lat=${
+            location?.coords?.latitude
+          }&lon=${location?.coords?.longitude}`,
         }),
       getNextPageParam: (lastPageData, allPagesData) =>
         lastPageData.meta?.currentPage !== lastPageData.meta.totalPages
@@ -71,6 +80,24 @@ export const VehiclesScreen: FC<HomeStackScreenProps<'VehiclesScreen'>> = ({
       ),
     });
   }, [navigation]);
+
+  useEffect(() => {
+    const getLocation = async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        dispatch(
+          addMessage({
+            message: 'Разрешение на доступ к местоположению было отклонено',
+          }),
+        );
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+    };
+    getLocation();
+  }, []);
 
   const handleSearch = (text: string) => {
     setSearch(text);

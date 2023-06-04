@@ -1,5 +1,6 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { FlatList, ScrollView, Text, View } from 'react-native';
+import * as Location from 'expo-location';
 
 import { TextButton } from '@/components/Forms';
 import Spinner from '@/components/Spinner';
@@ -9,17 +10,40 @@ import { useGetCarBrandsQuery } from '@/redux/services/makes.service';
 import { useGetAllVehiclesQuery } from '@/redux/services/vehicles.service';
 import { HomeStackScreenProps } from '@/types/home.stack.type';
 import { MakeCard } from '@/components/Makes';
+import { useAppDispatch } from '@/redux/hooks';
+import { addMessage } from '@/redux/slices/message';
 
 export const HomeScreen: FC<HomeStackScreenProps<'HomeScreen'>> = ({
   navigation,
 }) => {
+  const dispatch = useAppDispatch();
+  const [location, setLocation] = useState<Location.LocationObject>();
   const { data: makeData, isLoading } = useGetCarBrandsQuery('page=1&limit=10');
   const { data: vehiclesData, isLoading: isLoadingVehicles } =
     useGetAllVehiclesQuery(
-      'page=1&limit=10&filter.available=$eq:true&filter.enabled=$eq:true',
+      `page=1&limit=10&filter.available=$eq:true&filter.enabled=$eq:true&lat=${location?.coords?.latitude}&lon=${location?.coords?.longitude}`,
+      { skip: !location },
     );
 
-  if (isLoading || isLoadingVehicles) {
+  useEffect(() => {
+    const getLocation = async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        dispatch(
+          addMessage({
+            message: 'Разрешение на доступ к местоположению было отклонено',
+          }),
+        );
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+    };
+    getLocation();
+  }, []);
+
+  if (isLoading || isLoadingVehicles || !location) {
     return <Spinner />;
   }
 
@@ -35,7 +59,7 @@ export const HomeScreen: FC<HomeStackScreenProps<'HomeScreen'>> = ({
           </View>
           <View style={tw`flex-row`}>
             <FlatList
-              data={makeData.data}
+              data={makeData?.data}
               horizontal
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={tw`gap-4`}
@@ -63,7 +87,7 @@ export const HomeScreen: FC<HomeStackScreenProps<'HomeScreen'>> = ({
             </TextButton>
           </View>
           <View style={tw`gap-5`}>
-            {vehiclesData.data.map((item, index) => (
+            {vehiclesData?.data.map((item, index) => (
               <Card key={index} {...item} />
             ))}
           </View>

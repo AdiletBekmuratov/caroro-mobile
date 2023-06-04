@@ -15,6 +15,8 @@ export type User = {
   firstname: string;
   lastname: string;
   phone: string;
+  driverLicense?: string;
+  profileImage?: string;
   status: 'disabled' | 'pending' | 'enabled';
   createdAt: string;
   updatedAt: string;

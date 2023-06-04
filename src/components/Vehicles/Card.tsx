@@ -26,6 +26,7 @@ export const Card: FC<Vehicle> = ({
   companyId,
   images,
   price,
+  distance,
 }) => {
   const dispatch = useAppDispatch();
   const navigation =
@@ -74,10 +75,16 @@ export const Card: FC<Vehicle> = ({
           <Text style={tw`text-gray-600`}>|</Text>
           <Text style={tw`text-gray-600`}>{vehicleType.name}</Text>
         </View>
-        <Text style={tw`font-bold`}>
-          {price} KZT
-          <Text style={tw`text-gray-500 font-normal`}>/мин</Text>
-        </Text>
+        <View style={tw`flex-row items-center justify-between`}>
+          <Text style={tw`font-bold`}>
+            {price} KZT
+            <Text style={tw`text-gray-500 font-normal`}>/мин</Text>
+          </Text>
+          <Text style={tw`font-bold`}>
+            {distance.toFixed(2)} km
+            <Text style={tw`text-gray-500 font-normal`}> от Вас</Text>
+          </Text>
+        </View>
       </View>
 
       <View style={tw`flex-row relative gap-2`}>

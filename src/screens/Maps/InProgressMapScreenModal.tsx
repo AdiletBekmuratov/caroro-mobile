@@ -15,7 +15,6 @@ import {
 } from '@/redux/services/order.service';
 import { closeAllMapModals } from '@/redux/slices/mapModals';
 import { addMessage } from '@/redux/slices/message';
-import { API_URL } from '@/redux/http';
 
 const { width } = Dimensions.get('window');
 

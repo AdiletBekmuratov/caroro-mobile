@@ -25,6 +25,14 @@ export const profileApi = baseApi
         }),
         invalidatesTags: ['User'],
       }),
+      uploadProfileImage: builder.mutation<User, FormData>({
+        query: body => ({
+          url: `/users/upload/profile`,
+          method: 'POST',
+          body,
+        }),
+        invalidatesTags: ['User'],
+      }),
     }),
   });
 
@@ -32,4 +40,5 @@ export const {
   useFindMeQuery,
   useUpdateProfileMutation,
   useUploadDriverLicenseMutation,
+  useUploadProfileImageMutation,
 } = profileApi;
