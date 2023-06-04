@@ -2,21 +2,21 @@ import { Button } from '@/components/Forms';
 import { ProfileStackScreenProps } from '@/types/profile.stack.type';
 import { FontAwesome } from '@expo/vector-icons/';
 import * as ImagePicker from 'expo-image-picker';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import tw from '@/config/twrnc';
 import {
   useFindMeQuery,
   useUploadDriverLicenseMutation,
 } from '@/redux/services/profile.service';
+import { API_URL } from '@/redux/http';
+import Spinner from '@/components/Spinner';
 // import { Image } from 'expo-image';
 
 export const DocumentUploadScreen: FC<
   ProfileStackScreenProps<'DocumentUploadScreen'>
 > = ({ navigation }) => {
-  const { data, isLoading: isLoadingUser } = useFindMeQuery();
-
-  const [image, setImage] = useState<string>(data?.driverLicense ?? '');
+  const [image, setImage] = useState<string>();
   const [uploadLicense, { isLoading }] = useUploadDriverLicenseMutation();
 
   const pickImage = async () => {
@@ -59,7 +59,12 @@ export const DocumentUploadScreen: FC<
       </Text>
       {image ? (
         <View style={tw`flex-1 rounded-lg overflow-hidden`}>
-          <Image source={{ uri: image }} style={tw`w-full h-full`} />
+          <Image
+            source={{
+              uri: image,
+            }}
+            style={tw`w-full h-full`}
+          />
         </View>
       ) : (
         <TouchableOpacity style={tw`flex-grow`} onPress={pickImage}>

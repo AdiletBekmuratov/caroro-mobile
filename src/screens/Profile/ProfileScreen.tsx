@@ -1,7 +1,7 @@
-import React, { FC, useMemo, useState } from 'react';
-import { Image, Text, View, ScrollView } from 'react-native';
 import tw from '@/config/twrnc';
 import * as ImagePicker from 'expo-image-picker';
+import React, { FC, useMemo, useState } from 'react';
+import { Image, ScrollView, Text, View } from 'react-native';
 
 import {
   ButtonGroup,
@@ -9,18 +9,18 @@ import {
   IconButton,
   Switch,
 } from '@/components/Forms';
+import Spinner from '@/components/Spinner';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { logout } from '@/redux/slices/auth';
-import { ProfileStackScreenProps } from '@/types/index';
-import { setVibrate } from '@/redux/slices/settings';
+import { baseApi } from '@/redux/services/baseApi';
+import { useGetMyOrdersQuery } from '@/redux/services/order.service';
 import {
   useFindMeQuery,
   useUploadProfileImageMutation,
 } from '@/redux/services/profile.service';
-import Spinner from '@/components/Spinner';
+import { logout } from '@/redux/slices/auth';
+import { setVibrate } from '@/redux/slices/settings';
+import { ProfileStackScreenProps } from '@/types/index';
 import { statusColor, translateStatus } from '@/utils/status-translate';
-import { useGetMyOrdersQuery } from '@/redux/services/order.service';
-import { baseApi } from '@/redux/services/baseApi';
 
 export const ProfileScreen: FC<ProfileStackScreenProps<'ProfileScreen'>> = ({
   navigation,
@@ -59,7 +59,7 @@ export const ProfileScreen: FC<ProfileStackScreenProps<'ProfileScreen'>> = ({
 
     formData.append('image', {
       // @ts-ignore
-      uri: image,
+      uri: localUri,
       name: fileName,
       type: `image/${fileType}`,
     });
